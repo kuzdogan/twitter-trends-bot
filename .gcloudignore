@@ -1,0 +1,7 @@
+/node_modules
+/assets
+.gitignore
+.git
+.gcloudignore
+.env-example
+test.json

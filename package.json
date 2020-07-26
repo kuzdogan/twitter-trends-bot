@@ -1,0 +1,19 @@
+{
+  "name": "turkey-trends",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "kuzdogan",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "google-trends-api": "^4.9.0",
+    "moment": "^2.27.0",
+    "moment-timezone": "^0.5.31",
+    "twitter": "^1.7.1"
+  },
+  "devDependencies": {}
+}
