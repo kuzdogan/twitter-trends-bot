@@ -101,7 +101,7 @@ function splitDetailedTrendsInto280(detailedTrends, TCO_URL_LENGTH) {
   // detailedTrends = detailedTrends.slice(0, 5); // Debugging
   detailedTrends.forEach((trend, i) => {
     // Add title and related queries.
-    tweetStr += `${i}. ${trend.title}\n`;
+    tweetStr += `${i + 1}. ${trend.title}\n`;
     if (trend.relatedQueries.length > 0) // Leave blank if no relatedQueries.
       tweetStr += '🔍 İlgili aramalar: ' + trend.relatedQueries.join(', ') + '\n';
     tweetLength = tweetStr.length;
