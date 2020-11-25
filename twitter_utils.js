@@ -7,6 +7,7 @@ moment.locale('tr');
 console.log(config);
 let TCO_URL_LENGTH = 30; // Length of shortened t.co/XYZ url length. Config needs to be fetched from GET help/configration. Set 30 as default. 
 const ARTICLE_COUNT = 1; // Number of articles to append to each topic.
+
 /**
  * Function to post trends to Twitter.
  * Takes an array of custom trends objects 
@@ -26,30 +27,17 @@ exports.tweetTrends = async (trends) => {
     };
     return summaryTrendObj;
   })
-  let tweetsArray = splitTrendAndCountInto280(summaryTrends); // Add summary tweets
+  // tweetsArray as the final array of tweets. Push the list of trends as first tweets. 
+  let tweetsArray = splitTrendAndCountInto280(summaryTrends);
 
   // Extract details: title, related searches and articles
-  let detailTrends = trends.trendingSearches.map(trendObj => {
-    let detailTrendObj = {
-      title: trendObj.title.query,
-      relatedQueries: trendObj.relatedQueries.map(item => item.query),
-      moreInfo: 'https://trends.google.com' + trendObj.title.exploreLink,
-      articles: trendObj.articles.map(article => {
-        return {
-          source: article.source,
-          title: article.title,
-          url: article.url,
-        }
-      })
-    }
-    return detailTrendObj;
-  })
+  let detailedTrends = formatDetailedTrends(trends);
 
   console.log('Default TCO_LINK_LENGTH: ', TCO_URL_LENGTH);
   TCO_URL_LENGTH = await getTCoLinkLength();
   console.log('New TCO_LINK_LENGTH: ', TCO_URL_LENGTH);
   // Concat details
-  tweetsArray = tweetsArray.concat(splitDetailedTrendsInto280(detailTrends, TCO_URL_LENGTH));
+  tweetsArray = tweetsArray.concat(splitDetailedTrendsInto280(detailedTrends, TCO_URL_LENGTH));
 
   return tweetThread(tweetsArray);
   // return retrieveTweet('1286934152231686144').then(obj => console.log(obj)); // For Debugging
@@ -87,21 +75,20 @@ async function tweetThread(tweetsArray) {
 }
 
 /**
- * Fcuntion to split detailed trends into <280 char Strings
+ * Fcuntion to format an array of detailed trends object into <280 char tweets as strings.
  * @param {Array} detailedTrends - Array of objects of format:
  * { title: '', relatedQueries: ['', ..., ''], moreInfo: '', articles: [ {source: '', title: '', url: ''}, ... ] }
  * @returns {String[]} Array of strings each as a tweet. 
  */
 function splitDetailedTrendsInto280(detailedTrends, TCO_URL_LENGTH) {
   let tweets = []; // array of tweets limited to 280 chars.
-  tweets.push('⬇️⬇️⬇️⬇️⬇️⬇️⬇️⬇️⬇️⬇️⬇️\n👀 Detaylar ve ilgili haberler 👀 \n ⬇️⬇️⬇️⬇️⬇️⬇️⬇️⬇️⬇️⬇️⬇️'); // First tweet
   let tweetStr = '';
-  // urls get shortened. Keep tweet length seperate from str.length. 
+  // urls get shortened. Keep tweet length seperate from tweetStr.length. 
   let tweetLength = 0;
   // detailedTrends = detailedTrends.slice(0, 5); // Debugging
   detailedTrends.forEach((trend, i) => {
     // Add title and related queries.
-    tweetStr += `${i + 1}. ${trend.title}\n`;
+    tweetStr += `${i + 1}. ${trend.title}\n\n`;
     if (trend.relatedQueries.length > 0) // Leave blank if no relatedQueries.
       tweetStr += '🔍 İlgili aramalar: ' + trend.relatedQueries.join(', ') + '\n';
     tweetLength = tweetStr.length;
@@ -109,12 +96,12 @@ function splitDetailedTrendsInto280(detailedTrends, TCO_URL_LENGTH) {
     console.log('Tweet length: ' + tweetLength);
 
     let detayText = '📊 Detaylı istatistik: ';
-    tweetStr += detayText + trend.moreInfo + '\n';
-    tweetLength += detayText.length + TCO_URL_LENGTH + 1;
+    tweetStr += detayText + trend.moreInfo + '\n'; // trend.moreInfo is a URL
+    tweetLength += detayText.length + TCO_URL_LENGTH + 1; // dont add trend.moreInfo.length, use short URL length.
     console.log('Tweet: ' + tweetStr);
     console.log('Tweet length: ' + tweetLength);
 
-    // Add each article as new line, in same tweet if possible. Else new tweet.
+    // Add each ARTICLE_COUNNT articles as new line, in same tweet if possible. Else in the next tweet.
     for (let i = 0; i < Math.min(ARTICLE_COUNT, trend.articles.length); i++) {
       if (i === 0) {
         let ilgiliHaber = '📰 İlgili haberler:\n';
@@ -141,7 +128,7 @@ function splitDetailedTrendsInto280(detailedTrends, TCO_URL_LENGTH) {
         tweetLength = tempLength;
       }
       else { // Start new tweet if exceeds
-        tweetStr = decodeHtmlCharCodes('tweetStr'); // Decode &#39, &quot etc.
+        tweetStr = decodeHtmlCharCodes(tweetStr); // Decode &#39, &quot etc.
         console.log('Too long, starting new tweet');
         console.log('tweet: ', tweetStr);
         tweets.push(tweetStr);
@@ -161,10 +148,18 @@ function splitDetailedTrendsInto280(detailedTrends, TCO_URL_LENGTH) {
 }
 
 /**
- * Formats an array of trends to tweets.
- * Adds each trend as a new line. Creates a new element to tweets array as a reply if exceeds 280 chars.
+ * Formats an array of trends to 280 char tweets.
+ * Adds an introduction then lists trending searches each in a new line
  * 
- * @returns {String[]}an array of strings with less than 280 characters, each a tweet.
+ * @example 
+ * <introduction>
+ * 1. Zoom +100K
+ * 2. Mac saat kacta +50K
+ * ...
+ * 
+ * Creates a new element to tweets array as a reply if exceeds 280 chars.
+ * 
+ * @returns {String[]} an array of strings with less than 280 characters, each a tweet.
  * @param {Array} trends - Array of objects of type {title: , count: }
  */
 function splitTrendAndCountInto280(trends) {
@@ -172,9 +167,15 @@ function splitTrendAndCountInto280(trends) {
   console.log(trends);
 
   let tweets = []; // array of tweets limited to 280 chars.
-  let str = '📆 ' + moment().tz('Europe/Istanbul').format('D MMMM YYYY dddd H:mm ') + "\n🔍 Türkiye'de en çok aranan konular:\n";
+  let str =
+    '📆 ' + moment().tz('Europe/Istanbul').format('D MMMM YYYY dddd H:mm ') + "\n" +
+    "🔍 Türkiye'de en çok aranan konular:\n" +
+    "👀 Tamamı ve ilgili haberler için tıklayın 👀\n\n";
+
   trends.forEach((trend, i) => {
-    let newLine = `${i + 1}. ${trend.title} - ${trend.count}\n`
+    let newLine = `${i + 1}. ${trend.title} - ${trend.count}`.slice(0, -2)
+      + replaceCountLetter(trend.count) + "+\n";
+
     let temp = str + newLine;
     // Push as new tweet if exceeds 280 chars.
     if (temp.length < 250)
@@ -223,4 +224,33 @@ function getTCoLinkLength() {
 function decodeHtmlCharCodes(str) {
   return str.replace(/(&#(\d+);)/g, (match, capture, charCode) =>
     String.fromCharCode(charCode));
+}
+
+function replaceCountLetter(trendCountStr) {
+  // e.g. 100K+ check if K, replace with 'bin' if M replace with 'milyon'
+  let countLetter = trendCountStr.charAt(trend.count.length - 2);
+  if (countLetter === "K")
+    return "bin"
+  else if (countLetter === "M")
+    return "milyon"
+  else
+    return countLetter
+}
+
+function formatDetailedTrends(trends) {
+  return trends.trendingSearches.map(trendObj => {
+    let detailTrendObj = {
+      title: trendObj.title.query,
+      relatedQueries: trendObj.relatedQueries.map(item => item.query),
+      moreInfo: 'https://trends.google.com' + trendObj.title.exploreLink,
+      articles: trendObj.articles.map(article => {
+        return {
+          source: article.source,
+          title: article.title,
+          url: article.url,
+        }
+      })
+    }
+    return detailTrendObj;
+  })
 }

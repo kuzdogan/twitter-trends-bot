@@ -4,15 +4,13 @@ const twitterUtils = require('./twitter_utils');
 
 tweetDailyTrend();
 
-function tweetDailyTrend(message, context) { // message, context for Google Cloud Pub/Sub
+function tweetDailyTrend(message, context) { // message and context for Google Cloud Pub/Sub
 
   getDailyTrends()
     .then(trends => {
       // fs.writeFileSync('test.json', JSON.stringify(trends, 2));
       console.log('Number of Daily Trends: ' + trends.trendingSearches.length)
-
       return twitterUtils.tweetTrends(trends)
-        .catch(console.err);
     })
     .then(() => {
       console.log('SUCCESSFULLY TWEETED ', message ? message.data : null);
