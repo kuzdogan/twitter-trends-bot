@@ -26,7 +26,7 @@ exports.tweetTrends = async (trends) => {
       count: trendObj.formattedTraffic
     };
     return summaryTrendObj;
-  })
+  });
   // tweetsArray as the final array of tweets. Push the list of trends as first tweets. 
   let tweetsArray = splitTrendAndCountInto280(summaryTrends);
 
@@ -112,8 +112,8 @@ function splitDetailedTrendsInto280(detailedTrends, TCO_URL_LENGTH) {
       }
       let article = trend.articles[i];
       // Article line
-      let articleStr = `${article.source}: ${article.title}\n${article.url}\n`;
-      articleStrLength = article.source.length + article.title.length + 5 + TCO_URL_LENGTH;
+      let articleStr = `${article.source}: ${decodeHtmlCharCodes(article.title)}\n${article.url}\n`;
+      articleStrLength = article.source.length + decodeHtmlCharCodes(article.title).length + 5 + TCO_URL_LENGTH;
       console.log('Current tweet: ' + tweetStr);
       console.log('New article line: ', articleStr);
 
@@ -228,7 +228,7 @@ function decodeHtmlCharCodes(str) {
 
 function replaceCountLetter(trendCountStr) {
   // e.g. 100K+ check if K, replace with 'bin' if M replace with 'milyon'
-  let countLetter = trendCountStr.charAt(trend.count.length - 2);
+  let countLetter = trendCountStr.charAt(trendCountStr.length - 2);
   if (countLetter === "K")
     return "bin"
   else if (countLetter === "M")
