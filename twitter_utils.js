@@ -4,7 +4,6 @@ var config = require('./config.js');
 const T = new Twitter(config);
 const moment = require('moment-timezone');
 moment.locale('tr');
-console.log(config);
 let TCO_URL_LENGTH = 30; // Length of shortened t.co/XYZ url length. Config needs to be fetched from GET help/configration. Set 30 as default. 
 const ARTICLE_COUNT = 1; // Number of articles to append to each topic.
 
@@ -89,8 +88,14 @@ function splitDetailedTrendsInto280(detailedTrends, TCO_URL_LENGTH) {
   detailedTrends.forEach((trend, i) => {
     // Add title and related queries.
     tweetStr += `${i + 1}. ${trend.title}\n\n`;
-    if (trend.relatedQueries.length > 0) // Leave blank if no relatedQueries.
-      tweetStr += '🔍 İlgili aramalar: ' + trend.relatedQueries.join(', ') + '\n';
+    if (trend.relatedQueries.length > 0) { // Leave blank if no relatedQueries.
+      let queriesStr;
+      if (trend.relatedQueries.length > 5)
+        queriesStr = trend.relatedQueries.slice(0, 5).join(', ');
+      else 
+        queriesStr = trend.relatedQueries.join(', ');
+      tweetStr += '🔍 İlgili aramalar: ' + queriesStr + '\n';
+    }
     tweetLength = tweetStr.length;
     console.log('Tweet: ' + tweetStr);
     console.log('Tweet length: ' + tweetLength);
