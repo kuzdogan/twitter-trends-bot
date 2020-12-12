@@ -1,25 +1,26 @@
 const googleTrends = require('google-trends-api');
-const twitterUtils = require('./twitter_utils');
+const TrendTweeter = require('./TrendTweeter');
 // const fs = require('fs');
 
-tweetDailyTrend();
+tweetDailyTrend({data: 'VVM='});
 
 function tweetDailyTrend(message, context) { // message and context for Google Cloud Pub/Sub
 
-  getDailyTrends()
+  let country = Buffer.from(message.data, 'base64').toString();
+  console.log("Country: ", country)
+  // process.env.COUNTRY = 'message.data';
+  getDailyTrends(geo = country)
     .then(trends => {
-      // fs.writeFileSync('test.json', JSON.stringify(trends, 2));
+      console.log(trends)
+      let tweeter = new TrendTweeter(country = country, trends);
       console.log('Number of Daily Trends: ' + trends.trendingSearches.length)
-      return twitterUtils.tweetTrends(trends)
+      return tweeter.tweetTrends(trends)
     })
     .then(() => {
-      console.log('SUCCESSFULLY TWEETED ', message ? message.data : null);
+      console.log('SUCCESSFULLY TWEETED ');
     })
     .catch(err => console.error(err));
-
 }
-
-
 
 /**
  * Function to query daily Google trends of a country.
@@ -28,7 +29,8 @@ function tweetDailyTrend(message, context) { // message and context for Google C
  * @param {Date} date, date to be queried. Defaults to today. Must be within 15 days. see google-trends-api docs.
  * @returns {Promise} A Promise resolving to an array of trending searches. 
  */
-async function getDailyTrends(geo = 'TR', date = new Date()) {
+async function getDailyTrends(geo, date = new Date()) {
+  // date.setDate(11);
   try {
     let res = await googleTrends.dailyTrends(
       {
@@ -43,4 +45,4 @@ async function getDailyTrends(geo = 'TR', date = new Date()) {
   }
 }
 
-module.exports = { tweetDailyTrend }; // Export for Google Cloud Functions
+module.exports = { tweetDailyTrend };
