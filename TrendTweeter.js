@@ -12,6 +12,7 @@ class TrendTweeter {
     this.tco_URL_length = 30; // Length of shortened t.co/XYZ url length. Config needs to be fetched from GET help/configration. Set 30 as default. 
     this.articleCount = 1;// Number of articles to append to each topic.
     this.phrases = config[country].phrases;
+    this.timezone = config[country].timezone;
     moment.locale(config[country].locale);
   }
 
@@ -180,7 +181,7 @@ class TrendTweeter {
 
     let tweets = []; // array of tweets limited to 280 chars.
     let str =
-      '📆 ' + moment().tz('Europe/Istanbul').format('D MMMM YYYY dddd H:mm ') + "\n" +
+      '📆 ' + moment().tz(this.timezone).format('D MMMM YYYY dddd H:mm ') + "\n" +
       this.phrases.firstTweet.mostSearched +
       this.phrases.firstTweet.moreInfo;
 
