@@ -56,7 +56,7 @@ class TrendTweeter {
    * @param {Array} tweetsArray - Array of strings each as a tweet
    * @returns {String} the status_id of the final tweet 
    */
-   tweetThread = async (tweetsArray) => {
+  tweetThread = async (tweetsArray) => {
     if (tweetsArray.length === 0)
       return Promise.reject('Nothing to tweet');
     if (tweetsArray.length === 1)
@@ -100,7 +100,7 @@ class TrendTweeter {
         let queriesStr;
         if (trend.relatedQueries.length > 5)
           queriesStr = trend.relatedQueries.slice(0, 5).join(', ');
-        else 
+        else
           queriesStr = trend.relatedQueries.join(', ');
         tweetStr += this.phrases.relatedQueries + queriesStr + '\n';
       }
@@ -180,7 +180,7 @@ class TrendTweeter {
 
     let tweets = []; // array of tweets limited to 280 chars.
     let str =
-      '📆 ' + moment().format('D MMMM YYYY dddd H:mm ') + "\n" +
+      '📆 ' + moment().tz('Europe/Istanbul').format('D MMMM YYYY dddd H:mm ') + "\n" +
       this.phrases.firstTweet.mostSearched +
       this.phrases.firstTweet.moreInfo;
 
@@ -231,15 +231,15 @@ class TrendTweeter {
   }
 
   replaceCountLetter = (trendCountStr) => {
-  // e.g. 100K+ check if K, replace with 'bin' if M replace with 'milyon'
-  let countLetter = trendCountStr.charAt(trendCountStr.length - 2);
-  if (countLetter === "K")
-    return this.phrases.thousand
-  else if (countLetter === "M")
-    return this.phrases.million
-  else
-    return countLetter
-}
+    // e.g. 100K+ check if K, replace with 'bin' if M replace with 'milyon'
+    let countLetter = trendCountStr.charAt(trendCountStr.length - 2);
+    if (countLetter === "K")
+      return this.phrases.thousand
+    else if (countLetter === "M")
+      return this.phrases.million
+    else
+      return countLetter
+  }
 }
 
 

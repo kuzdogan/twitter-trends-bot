@@ -1,14 +1,11 @@
 const googleTrends = require('google-trends-api');
 const TrendTweeter = require('./TrendTweeter');
-// const fs = require('fs');
-
-tweetDailyTrend({data: 'VVM='});
 
 function tweetDailyTrend(message, context) { // message and context for Google Cloud Pub/Sub
-
+  // let country = 'TR'
   let country = Buffer.from(message.data, 'base64').toString();
   console.log("Country: ", country)
-  // process.env.COUNTRY = 'message.data';
+
   getDailyTrends(geo = country)
     .then(trends => {
       console.log(trends)
@@ -30,7 +27,6 @@ function tweetDailyTrend(message, context) { // message and context for Google C
  * @returns {Promise} A Promise resolving to an array of trending searches. 
  */
 async function getDailyTrends(geo, date = new Date()) {
-  // date.setDate(11);
   try {
     let res = await googleTrends.dailyTrends(
       {

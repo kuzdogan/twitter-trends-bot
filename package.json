@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "deploy": "gcloud functions deploy tweetDailyTrend --runtime nodejs12 --trigger-topic tweet"
   },
   "author": "kuzdogan",
   "license": "MIT",
