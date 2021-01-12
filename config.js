@@ -9,7 +9,7 @@ module.exports = {
       access_token_secret: process.env.TR_ACCESS_TOKEN_SECRET
     },
     locale: 'tr',
-    timezone: 'Europe/Istanbul'
+    timezone: 'Europe/Istanbul',
     phrases: {
       firstTweet: {
         mostSearched: "🔍 Türkiye'de en çok aranan konular:\n",
@@ -19,8 +19,11 @@ module.exports = {
       detailedStats: '📊 Detaylı istatistik: ',
       articles: '📰 İlgili haberler:\n',
       thousand: 'bin',
-      million: 'milyon'
-    }
+      million: 'milyon',
+      searches: 'arama',
+      imageTitle: 'Türkiye\'de en çok aranan konular:'
+    },
+    accountName: '@24TrendsTurkey'
   },
   US: {
     twitterConfig: {
@@ -40,8 +43,11 @@ module.exports = {
       detailedStats: '📊 Detailed Stats: ',
       articles: '📰 News Related:\n',
       thousand: 'K',
-      million: 'M'
-    }
+      million: 'M',
+      searches: 'searches',
+      imageTitle: 'Recent trending searches in United States:'
+    },
+    accountName: '@24TrendsUSA',
   },
   IN: {
     twitterConfig: {
@@ -51,7 +57,7 @@ module.exports = {
       access_token_secret: process.env.IN_ACCESS_TOKEN_SECRET
     },
     locale: 'en-in',
-    timezone: 'Asia/ Kolkata',
+    timezone: 'Asia/Kolkata',
     phrases: {
       firstTweet: {
         mostSearched: "🔍 Recent trending searches in India:\n",
@@ -61,7 +67,10 @@ module.exports = {
       detailedStats: '📊 Detailed Stats: ',
       articles: '📰 News Related:\n',
       thousand: 'K',
-      million: 'M'
-    }
+      million: 'M',
+      searches: 'searches',
+      imageTitle: 'Recent trending searches in India:'
+    },
+    accountName: '@24TrendsIndia'
   },
 };

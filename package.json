@@ -4,12 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "node -e \"require(\"./index.js\").tweetDailyTrend()\"",
+    "test": "node -e \"require('./index.js').tweetDailyTrend({data:'VFI='})\"",
     "deploy": "gcloud functions deploy tweetDailyTrend --runtime nodejs12 --trigger-topic tweet"
   },
   "author": "kuzdogan",
   "license": "MIT",
   "dependencies": {
+    "canvas": "^2.6.1",
     "dotenv": "^8.2.0",
     "google-trends-api": "^4.9.0",
     "moment": "^2.27.0",

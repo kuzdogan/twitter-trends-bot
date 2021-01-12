@@ -2,6 +2,7 @@ require('dotenv').config();
 const Twitter = require('twitter');
 const config = require('./config.js');
 const moment = require('moment-timezone');
+const { createCanvas, registerFont, loadImage } = require('canvas')
 
 class TrendTweeter {
 
@@ -12,8 +13,11 @@ class TrendTweeter {
     this.tco_URL_length = 30; // Length of shortened t.co/XYZ url length. Config needs to be fetched from GET help/configration. Set 30 as default. 
     this.articleCount = 1;// Number of articles to append to each topic.
     this.phrases = config[country].phrases;
+    this.accountName = config[country].accountName;
     this.timezone = config[country].timezone;
     moment.locale(config[country].locale);
+    this.width = 1200; // Summary image canvas width
+    this.height = 675;
   }
 
   /**
@@ -41,13 +45,16 @@ class TrendTweeter {
     // Extract details: title, related searches and articles
     let detailedTrends = formatDetailedTrendsObjects(this.trends);
 
+    console.log('Creating summary image');
+    let imageSummary = await this.trendsToImage(detailedTrends);
+
     console.log('Default TCO_LINK_LENGTH: ', this.tco_URL_length);
     this.tco_URL_length = await this.getTCoLinkLength();
     console.log('New TCO_LINK_LENGTH: ', this.tco_URL_length);
     // Concat details
     tweetsArray = tweetsArray.concat(this.splitDetailedTrendsInto280(detailedTrends));
 
-    return this.tweetThread(tweetsArray);
+    return this.tweetThread(imageSummary, tweetsArray);
     // return retrieveTweet('1286934152231686144').then(obj => console.log(obj)); // For Debugging
   }
 
@@ -55,21 +62,26 @@ class TrendTweeter {
    * Tweet in sequence. Get status id from previous one and post next as a reply.
    * 
    * @param {Array} tweetsArray - Array of strings each as a tweet
+   * @param {Object} imageSummary - Initial tweet with a summary PNG of all topics and counts
    * @returns {String} the status_id of the final tweet 
    */
-  tweetThread = async (tweetsArray) => {
+  tweetThread = async (imageSummary, tweetsArray) => {
     if (tweetsArray.length === 0)
       return Promise.reject('Nothing to tweet');
     if (tweetsArray.length === 1)
       return this.tweet(tweetsArray[0]);
 
+    let initialTweetMsg = '📆 ' + moment().tz(this.timezone).format('D MMMM YYYY dddd H:mm ') + "\n" +
+      this.phrases.firstTweet.mostSearched +
+      this.phrases.firstTweet.moreInfo;
+
     // Publish the fist tweet 
-    let response = await this.tweet(tweetsArray[0]);
+    let response = await this.tweetImage(imageSummary, initialTweetMsg);
     let prevIdStr = response.id_str;
     let username = response.user.screen_name;
 
     // Publish reply tweets
-    for (let i = 1; i < tweetsArray.length; i++) {
+    for (let i = 0; i < tweetsArray.length; i++) {
       let tweetStr = tweetsArray[i];
       console.log(`Prev Id: \t\t ${prevIdStr}`);
       console.log('Tweet: ', tweetStr);
@@ -158,7 +170,62 @@ class TrendTweeter {
 
     return tweets;
   }
+  /**
+   * Function to create a PNG image as a summary of all topics and search counts.
+   * 
+   * @param {Array} summaryTrends 
+   */
+  trendsToImage = async (detailedTrends) => {
+    registerFont('assets/Roboto-Light.ttf', { family: 'Roboto', weight: 300 })
+    registerFont('assets/Roboto-Regular.ttf', { family: 'Roboto', weight: 400 })
+    registerFont('assets/Roboto-Bold.ttf', { family: 'Roboto', weight: 700 })
+    const canvas = createCanvas(this.width, this.height);
+    const textMarginTop = 120;
+    const textMarginX = 64;
+    const context = canvas.getContext('2d');
+    const explaination = moment().tz(this.timezone).format('D MMMM YYYY dddd H:mm ') + " - " + this.phrases.imageTitle;
+    context.fillStyle = '#fff';
+    context.fillRect(0, 0, this.width, this.height);
 
+    context.fillStyle = '#000'
+    context.textAlign = 'left'
+
+    let image = await loadImage('assets/logo.png')
+    context.drawImage(image, textMarginX, 16, 128, 128)
+
+    context.font = 'bold 24pt Roboto'
+    context.fillText(this.accountName, 200, 80);
+
+    context.font = '12pt Roboto'
+    context.fillText(explaination, 200, 110)
+    for (let i = 0; i < detailedTrends.length; i++) {
+      // Split canvas into two columns with max 10 items
+      let lineX = (i > 9) ? textMarginX + this.width / 2 - 24 : textMarginX;
+      let lineY = (i > 9) ? textMarginTop + (i - 10 + 1) * 48 : textMarginTop + (i + 1) * 48
+
+      const trend = detailedTrends[i];
+      const title = `${i + 1}. ${trend.title}`;
+      const count = trend.count.slice(0, -2) + this.replaceCountLetter(trend.count) + "+";
+      const summary = `${trend.articles[0].source}: ${decodeHtmlCharCodes(trend.articles[0].title)}`
+
+      // Title
+      context.font = 'bold 12pt Roboto'
+      context.fillText(title, lineX, lineY);
+      let titleWidth = context.measureText(title).width;
+
+      // Search count
+      context.font = '300 11pt Roboto'
+      context.fillText(' — ' + count + ' ' + this.phrases.searches, lineX + titleWidth, lineY);
+
+      // Summary
+      context.font = '300 11pt Roboto'
+      context.fillText(truncate(summary, 74), lineX, lineY + 20)
+    }
+    console.log("CREATED IMAGE")
+    // const buffer = canvas.toBuffer('image/png')
+    // fs.writeFileSync('./test.png', buffer)
+    return canvas.toBuffer('image/png')
+  }
 
   /**
    * Formats an array of trends to 280 char tweets.
@@ -180,10 +247,7 @@ class TrendTweeter {
     console.log(trends);
 
     let tweets = []; // array of tweets limited to 280 chars.
-    let str =
-      '📆 ' + moment().tz(this.timezone).format('D MMMM YYYY dddd H:mm ') + "\n" +
-      this.phrases.firstTweet.mostSearched +
-      this.phrases.firstTweet.moreInfo;
+    let str = ''
 
     trends.forEach((trend, i) => {
       let newLine = `${i + 1}. ${trend.title} - ${trend.count}`.slice(0, -2)
@@ -215,6 +279,13 @@ class TrendTweeter {
 
   tweet = (status) => {
     return this.makePost('statuses/update', { status: status });
+  }
+
+  tweetImage = (image, status) => {
+    return this.makePost('media/upload', { media: image })
+      .then(mediaObj => {
+        return this.makePost('statuses/update', { status: status, media_ids: mediaObj.media_id_string })
+      });
   }
 
   reply = (status, prevIdStr, username) => {
@@ -257,6 +328,7 @@ function formatDetailedTrendsObjects(trends) {
   return trends.trendingSearches.map(trendObj => {
     let detailTrendObj = {
       title: trendObj.title.query,
+      count: trendObj.formattedTraffic,
       relatedQueries: trendObj.relatedQueries.map(item => item.query),
       moreInfo: 'https://trends.google.com' + trendObj.title.exploreLink,
       articles: trendObj.articles.map(article => {
@@ -270,5 +342,9 @@ function formatDetailedTrendsObjects(trends) {
     return detailTrendObj;
   })
 }
+
+function truncate(str, n) {
+  return (str.length > n) ? str.substr(0, n - 1) + '...' : str;
+};
 
 module.exports = TrendTweeter;
