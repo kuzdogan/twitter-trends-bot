@@ -47,6 +47,7 @@ class TrendTweeter {
 
     console.log('Creating summary image');
     let imageSummary = await this.trendsToImage(detailedTrends);
+    console.log("CREATED IMAGE")
 
     console.log('Default TCO_LINK_LENGTH: ', this.tco_URL_length);
     this.tco_URL_length = await this.getTCoLinkLength();
@@ -71,7 +72,7 @@ class TrendTweeter {
     if (tweetsArray.length === 1)
       return this.tweet(tweetsArray[0]);
 
-    let initialTweetMsg = '📆 ' + moment().tz(this.timezone).format('D MMMM YYYY dddd H:mm ') + "\n" +
+    let initialTweetMsg = '📆 ' + moment().tz(this.timezone).format('D MMMM YYYY dddd H:00 ') + "\n" +
       this.phrases.firstTweet.mostSearched +
       this.phrases.firstTweet.moreInfo;
 
@@ -176,28 +177,43 @@ class TrendTweeter {
    * @param {Array} summaryTrends 
    */
   trendsToImage = async (detailedTrends) => {
+    console.log('Registering Light font')
     registerFont('assets/Roboto-Light.ttf', { family: 'Roboto', weight: 300 })
+    console.log('Registered Light font')
+    console.log('Registering Regular font')
     registerFont('assets/Roboto-Regular.ttf', { family: 'Roboto', weight: 400 })
+    console.log('Registered regular font')
+    console.log('Registering Bold font')
     registerFont('assets/Roboto-Bold.ttf', { family: 'Roboto', weight: 700 })
+    console.log('Registered Bold font')
+    console.log('Creating Canvas')
     const canvas = createCanvas(this.width, this.height);
+    console.log('Created Canvas')
     const textMarginTop = 120;
     const textMarginX = 64;
     const context = canvas.getContext('2d');
-    const explaination = moment().tz(this.timezone).format('D MMMM YYYY dddd H:mm ') + " - " + this.phrases.imageTitle;
+    const explaination = moment().tz(this.timezone).format('D MMMM YYYY dddd H:00 ') + " - " + this.phrases.imageTitle;
     context.fillStyle = '#fff';
     context.fillRect(0, 0, this.width, this.height);
 
     context.fillStyle = '#000'
     context.textAlign = 'left'
 
+    console.log('Loading image')
     let image = await loadImage('assets/logo.png')
+    console.log('Loaded image')
+
+    console.log('Drawing image')
     context.drawImage(image, textMarginX, 16, 128, 128)
+    console.log('Drawed image')
 
     context.font = 'bold 24pt Roboto'
     context.fillText(this.accountName, 200, 80);
 
     context.font = '12pt Roboto'
     context.fillText(explaination, 200, 110)
+
+    console.log('Starting for loop')
     for (let i = 0; i < detailedTrends.length; i++) {
       // Split canvas into two columns with max 10 items
       let lineX = (i > 9) ? textMarginX + this.width / 2 - 24 : textMarginX;
@@ -208,20 +224,26 @@ class TrendTweeter {
       const count = trend.count.slice(0, -2) + this.replaceCountLetter(trend.count) + "+";
       const summary = `${trend.articles[0].source}: ${decodeHtmlCharCodes(trend.articles[0].title)}`
 
+      console.log('Writing title ' + title)
       // Title
       context.font = 'bold 12pt Roboto'
       context.fillText(title, lineX, lineY);
       let titleWidth = context.measureText(title).width;
+      console.log('Wrote title')
 
+      console.log('Writing count')
       // Search count
       context.font = '300 11pt Roboto'
       context.fillText(' — ' + count + ' ' + this.phrases.searches, lineX + titleWidth, lineY);
+      console.log('Wrote count')
 
+      console.log('Writing summary')
       // Summary
       context.font = '300 11pt Roboto'
       context.fillText(truncate(summary, 74), lineX, lineY + 20)
+      console.log('Wrote summary')
     }
-    console.log("CREATED IMAGE")
+    console.log('End for loop')
     // const buffer = canvas.toBuffer('image/png')
     // fs.writeFileSync('./test.png', buffer)
     return canvas.toBuffer('image/png')
