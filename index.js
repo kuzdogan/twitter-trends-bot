@@ -1,7 +1,7 @@
 const googleTrends = require('google-trends-api');
 const TrendTweeter = require('./TrendTweeter');
 
-function tweetDailyTrend(message, context) { // message and context for Google Cloud Pub/Sub
+exports.tweetDailyTrend = function (message, context) { // message and context for Google Cloud Pub/Sub
   // let country = 'IN'
   let country = Buffer.from(message.data, 'base64').toString();
   console.log("Country: ", country)
