@@ -40,5 +40,3 @@ async function getDailyTrends(geo, date = new Date()) {
     return Promise.reject('Couldnt get results: ', err);
   }
 }
-
-module.exports = { tweetDailyTrend };
