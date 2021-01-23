@@ -8,6 +8,7 @@ module.exports = {
       access_token_key: process.env.TR_ACCESS_TOKEN_KEY,
       access_token_secret: process.env.TR_ACCESS_TOKEN_SECRET
     },
+    lite: false,
     locale: 'tr',
     timezone: 'Europe/Istanbul',
     phrases: {
@@ -25,13 +26,14 @@ module.exports = {
     },
     accountName: '@24TrendsTurkey'
   },
-  US: {
+  US: { // Use here US only instead of USA. Google trends API library asks US not USA.
     twitterConfig: {
       consumer_key: process.env.CONSUMER_KEY,
       consumer_secret: process.env.CONSUMER_SECRET,
-      access_token_key: process.env.US_ACCESS_TOKEN_KEY,
-      access_token_secret: process.env.US_ACCESS_TOKEN_SECRET
+      access_token_key: process.env.USA_ACCESS_TOKEN_KEY,
+      access_token_secret: process.env.USA_ACCESS_TOKEN_SECRET
     },
+    lite: true,
     locale: 'en-us',
     timezone: 'America/New_York',
     phrases: {
@@ -58,6 +60,7 @@ module.exports = {
     },
     locale: 'en-in',
     timezone: 'Asia/Kolkata',
+    lite: true,
     phrases: {
       firstTweet: {
         mostSearched: "🔍 Recent trending searches in India:\n",

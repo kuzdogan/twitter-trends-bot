@@ -6,7 +6,8 @@ const { createCanvas, registerFont, loadImage } = require('canvas')
 
 class TrendTweeter {
 
-  constructor(country, trends) {
+  constructor(country, trends, date) {
+    this.date = date;
     this.country = country;
     this.trends = trends;
     this.Twitter = new Twitter(config[country].twitterConfig);
@@ -15,6 +16,7 @@ class TrendTweeter {
     this.phrases = config[country].phrases;
     this.accountName = config[country].accountName;
     this.timezone = config[country].timezone;
+    this.lite = config[country].lite;
     moment.locale(config[country].locale);
     this.width = 1200; // Summary image canvas width
     this.height = 675;
@@ -52,9 +54,10 @@ class TrendTweeter {
     console.log('Default TCO_LINK_LENGTH: ', this.tco_URL_length);
     this.tco_URL_length = await this.getTCoLinkLength();
     console.log('New TCO_LINK_LENGTH: ', this.tco_URL_length);
-    // Concat details
-    tweetsArray = tweetsArray.concat(this.splitDetailedTrendsInto280(detailedTrends));
-
+    // Concat detailed news if not lite
+    if (!this.lite) {
+      tweetsArray = tweetsArray.concat(this.splitDetailedTrendsInto280(detailedTrends));
+    }
     return this.tweetThread(imageSummary, tweetsArray);
     // return retrieveTweet('1286934152231686144').then(obj => console.log(obj)); // For Debugging
   }
@@ -69,15 +72,14 @@ class TrendTweeter {
   tweetThread = async (imageSummary, tweetsArray) => {
     if (tweetsArray.length === 0)
       return Promise.reject('Nothing to tweet');
-    if (tweetsArray.length === 1)
-      return this.tweet(tweetsArray[0]);
 
-    let initialTweetMsg = '📆 ' + moment().tz(this.timezone).format('D MMMM YYYY dddd H:00 ') + "\n" +
+    let initialTweetMsg = '📆 ' + this.date.format('D MMMM YYYY dddd H:mm ') + "\n" +
       this.phrases.firstTweet.mostSearched +
       this.phrases.firstTweet.moreInfo;
 
     // Publish the fist tweet 
     let response = await this.tweetImage(imageSummary, initialTweetMsg);
+    console.log("First tweet id: " + response.id_str)
     let prevIdStr = response.id_str;
     let username = response.user.screen_name;
 
@@ -192,7 +194,7 @@ class TrendTweeter {
     const textMarginTop = 120;
     const textMarginX = 64;
     const context = canvas.getContext('2d');
-    const explaination = moment().tz(this.timezone).format('D MMMM YYYY dddd H:00 ') + " - " + this.phrases.imageTitle;
+    const explaination = this.date.format('D MMMM YYYY dddd H:mm ') + " - " + this.phrases.imageTitle;
     context.fillStyle = '#fff';
     context.fillRect(0, 0, this.width, this.height);
 

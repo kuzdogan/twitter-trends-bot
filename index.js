@@ -1,22 +1,33 @@
 const googleTrends = require('google-trends-api');
 const TrendTweeter = require('./TrendTweeter');
+const config = require('./config.js');
+const moment = require('moment-timezone');
 
-exports.tweetDailyTrend = function (message, context) { // message and context for Google Cloud Pub/Sub
+function tweetDailyTrend(message, context) { // message and context for Google Cloud Pub/Sub
   // let country = 'IN'
-  let country = Buffer.from(message.data, 'base64').toString();
-  console.log("Country: ", country)
+  // let country = Buffer.from(message.data, 'base64').toString();
+  // console.log("Country: ", country)
+  for (const country in config) {
+    // Get the time for this country.
+    let date = moment().tz(config[country].timezone);
+    console.log(country)
 
-  getDailyTrends(geo = country)
-    .then(trends => {
-      console.log(trends)
-      let tweeter = new TrendTweeter(country = country, trends);
-      console.log('Number of Daily Trends: ' + trends.trendingSearches.length)
-      return tweeter.tweetTrends(trends)
-    })
-    .then(() => {
-      console.log('SUCCESSFULLY TWEETED ');
-    })
-    .catch(err => console.error(err));
+    // Tweet if it's 13h 18h or 23h. For India this will be 13:30, 18:30, 23:30
+    if (date.format("H") === "13" || date.format("H") === "18" || date.format("H") === "23") {
+      getDailyTrends(geo = country)
+        .then(trends => {
+          // console.log(trends)
+          console.log('Country changed? ' + country)
+          let tweeter = new TrendTweeter(country, trends, date);
+          console.log('Number of Daily Trends: ' + trends.trendingSearches.length)
+          return tweeter.tweetTrends(trends)
+        })
+        .then(() => {
+          console.log('SUCCESSFULLY TWEETED ');
+        })
+        .catch(err => console.error(err));
+    }
+  }
 }
 
 /**
@@ -40,3 +51,5 @@ async function getDailyTrends(geo, date = new Date()) {
     return Promise.reject('Couldnt get results: ', err);
   }
 }
+
+module.exports = { tweetDailyTrend };
