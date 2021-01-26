@@ -38,7 +38,7 @@ module.exports = {
     timezone: 'America/New_York',
     phrases: {
       firstTweet: {
-        mostSearched: "🔍 Recent trending searches in United States:\n",
+        mostSearched: "🔍 Recent trending searches in the United States:\n",
         moreInfo: "👀 News and details below 👀\n\n"
       },
       relatedQueries: '🔍 Related Searches: ',
@@ -47,7 +47,7 @@ module.exports = {
       thousand: 'K',
       million: 'M',
       searches: 'searches',
-      imageTitle: 'Recent trending searches in United States:'
+      imageTitle: 'Recent trending searches in the United States:'
     },
     accountName: '@24TrendsUSA',
   },
@@ -75,5 +75,30 @@ module.exports = {
       imageTitle: 'Recent trending searches in India:'
     },
     accountName: '@24TrendsIndia'
+  },
+  DE: {
+    twitterConfig: {
+      consumer_key: process.env.CONSUMER_KEY,
+      consumer_secret: process.env.CONSUMER_SECRET,
+      access_token_key: process.env.DE_ACCESS_TOKEN_KEY,
+      access_token_secret: process.env.DE_ACCESS_TOKEN_SECRET
+    },
+    locale: 'de',
+    timezone: 'Europe/Berlin',
+    lite: true,
+    phrases: {
+      firstTweet: {
+        mostSearched: "🔍 Neueste trende Suchen in Deutschland:\n",
+        moreInfo: "👀 Nachrichten und Details unten 👀\n\n"
+      },
+      relatedQueries: '🔍 Zusammenhängende Suchen: ',
+      detailedStats: '📊 Detaillierte Statistiken: ',
+      articles: '📰 Betreffende Nachrichte:\n',
+      thousand: 'K',
+      million: 'M',
+      searches: 'Suchen',
+      imageTitle: 'Neueste trende Suchen in Deutschland:'
+    },
+    accountName: '@DeutschlandGoo2'
   },
 };
