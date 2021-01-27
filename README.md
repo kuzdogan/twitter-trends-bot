@@ -6,6 +6,7 @@ Based on the unofficial [google-trends-api](https://github.com/pat310/google-tre
 
 2 character [geocodes](https://github.com/datasets/country-codes/blob/master/data/country-codes.csv).
 List of [timezones](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones).
+[Locales](https://github.com/moment/moment/tree/develop/locale)
 
 To get access token key & secret:
 
