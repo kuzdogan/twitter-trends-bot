@@ -13,8 +13,8 @@ function tweetDailyTrend(message, context) { // message and context for Google C
     console.log(country)
 
     // Tweet if it's 13h 18h or 23h. For India this will be 13:30, 18:30, 23:30
-    // if (date.format("H") === "13" || date.format("H") === "18" || date.format("H") === "23") {
-    if (country === 'DE') { // Debug
+    if (date.format("H") === "13" || date.format("H") === "18" || date.format("H") === "23") {
+      // if (country === 'DE') { // Debug
       getDailyTrends(geo = country)
         .then(trends => {
           // console.log(trends)
