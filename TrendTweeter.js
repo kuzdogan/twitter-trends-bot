@@ -17,7 +17,6 @@ class TrendTweeter {
     this.accountName = config[country].accountName;
     this.timezone = config[country].timezone;
     this.lite = config[country].lite;
-    moment.locale(config[country].locale);
     this.width = 1200; // Summary image canvas width
     this.height = 675;
   }
