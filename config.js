@@ -14,7 +14,7 @@ module.exports = {
     phrases: {
       firstTweet: {
         mostSearched: "🔍 Türkiye'de en çok aranan konular:\n",
-        moreInfo: "👀 Tamamı ve ilgili haberler için tıklayın 👀\n\n"
+        moreInfo: "Tamamı ve ilgili haberler için tıklayın \n\n"
       },
       relatedQueries: '🔍 İlgili aramalar: ',
       detailedStats: '📊 Detaylı istatistik: ',
@@ -60,11 +60,11 @@ module.exports = {
     },
     locale: 'en-in',
     timezone: 'Asia/Kolkata',
-    lite: true,
+    lite: false,
     phrases: {
       firstTweet: {
         mostSearched: "🔍 Recent trending searches in India:\n",
-        moreInfo: "👀 News and details below 👀\n\n"
+        moreInfo: "News and details below \n\n"
       },
       relatedQueries: '🔍 Related Searches: ',
       detailedStats: '📊 Detailed Stats: ',
@@ -89,7 +89,7 @@ module.exports = {
     phrases: {
       firstTweet: {
         mostSearched: "🔍 Neueste trende Suchen in Deutschland:\n",
-        moreInfo: "👀 Nachrichten und Details unten 👀\n\n"
+        moreInfo: "Nachrichten und Details unten \n\n"
       },
       relatedQueries: '🔍 Zusammenhängende Suchen: ',
       detailedStats: '📊 Detaillierte Statistiken: ',
@@ -99,22 +99,22 @@ module.exports = {
       searches: 'Suchen',
       imageTitle: 'Neueste trende Suchen in Deutschland:'
     },
-    accountName: '@DeutschlandGoo2'
+    accountName: '@24trendsDE'
   },
-  // UK: { // Use here US only instead of USA. Google trends API library asks US not USA.
+  // UK: {
   //   twitterConfig: {
   //     consumer_key: process.env.CONSUMER_KEY,
   //     consumer_secret: process.env.CONSUMER_SECRET,
-  //     access_token_key: process.env.USA_ACCESS_TOKEN_KEY,
-  //     access_token_secret: process.env.USA_ACCESS_TOKEN_SECRET
+  //     access_token_key: process.env.UK_ACCESS_TOKEN_KEY,
+  //     access_token_secret: process.env.UK_ACCESS_TOKEN_SECRET
   //   },
   //   lite: true,
   //   locale: 'en-us',
   //   timezone: 'America/New_York',
   //   phrases: {
   //     firstTweet: {
-  //       mostSearched: "🔍 Recent trending searches in the United States:\n",
-  //       moreInfo: "👀 News and details below 👀\n\n"
+  //       mostSearched: "🔍 Recent trending searches in the United Kingdom:\n",
+  //       moreInfo: "News and details below \n\n"
   //     },
   //     relatedQueries: '🔍 Related Searches: ',
   //     detailedStats: '📊 Detailed Stats: ',
@@ -122,11 +122,11 @@ module.exports = {
   //     thousand: 'K',
   //     million: 'M',
   //     searches: 'searches',
-  //     imageTitle: 'Recent trending searches in the United States:'
+  //     imageTitle: 'Recent trending searches in the United Kingdom:'
   //   },
-  //   accountName: '@GoogleTrendsUK1',
+  //   accountName: '@24trendsUK',
   // },
-  AU: { // Use here US only instead of USA. Google trends API library asks US not USA.
+  AU: {
     twitterConfig: {
       consumer_key: process.env.CONSUMER_KEY,
       consumer_secret: process.env.CONSUMER_SECRET,
@@ -139,7 +139,7 @@ module.exports = {
     phrases: {
       firstTweet: {
         mostSearched: "🔍 Recent trending searches in Australia:\n",
-        moreInfo: "👀 News and details below 👀\n\n"
+        moreInfo: "News and details below \n\n"
       },
       relatedQueries: '🔍 Related Searches: ',
       detailedStats: '📊 Detailed Stats: ',
@@ -149,6 +149,131 @@ module.exports = {
       searches: 'searches',
       imageTitle: 'Recent trending searches in Australia:'
     },
-    accountName: '@GoogleTrendsAu1',
+    accountName: '@24trendsAU',
   },
+  // NZ: {
+  //   twitterConfig: {
+  //     consumer_key: process.env.CONSUMER_KEY,
+  //     consumer_secret: process.env.CONSUMER_SECRET,
+  //     access_token_key: process.env.NZ_ACCESS_TOKEN_KEY,
+  //     access_token_secret: process.env.NZ_ACCESS_TOKEN_SECRET
+  //   },
+  //   lite: true,
+  //   locale: 'en-nz',
+  //   timezone: 'Pacific/Auckland',
+  //   phrases: {
+  //     firstTweet: {
+  //       mostSearched: "🔍 Recent trending searches in New Zealand:\n",
+  //       moreInfo: "News and details below \n\n"
+  //     },
+  //     relatedQueries: '🔍 Related Searches: ',
+  //     detailedStats: '📊 Detailed Stats: ',
+  //     articles: '📰 News Related:\n',
+  //     thousand: 'K',
+  //     million: 'M',
+  //     searches: 'searches',
+  //     imageTitle: 'Recent trending searches in New Zealand:'
+  //   },
+  //   accountName: '@GoogleZealand',
+  // },
+  CA: {
+    twitterConfig: {
+      consumer_key: process.env.CONSUMER_KEY,
+      consumer_secret: process.env.CONSUMER_SECRET,
+      access_token_key: process.env.CA_ACCESS_TOKEN_KEY,
+      access_token_secret: process.env.CA_ACCESS_TOKEN_SECRET
+    },
+    lite: true,
+    locale: 'en-ca',
+    timezone: 'Canada/Eastern',
+    phrases: {
+      firstTweet: {
+        mostSearched: "🔍 Recent trending searches in Canada:\n",
+        moreInfo: "News and details below \n\n"
+      },
+      relatedQueries: '🔍 Related Searches: ',
+      detailedStats: '📊 Detailed Stats: ',
+      articles: '📰 News Related:\n',
+      thousand: 'K',
+      million: 'M',
+      searches: 'searches',
+      imageTitle: 'Recent trending searches in Canada:'
+    },
+    accountName: '@CanadaGoogleTr1',
+  },
+  // PK: {
+  //   twitterConfig: {
+  //     consumer_key: process.env.CONSUMER_KEY,
+  //     consumer_secret: process.env.CONSUMER_SECRET,
+  //     access_token_key: process.env.PK_ACCESS_TOKEN_KEY,
+  //     access_token_secret: process.env.PK_ACCESS_TOKEN_SECRET
+  //   },
+  //   lite: true,
+  //   locale: 'en-in',
+  //   timezone: 'Asia/Karachi',
+  //   phrases: {
+  //     firstTweet: {
+  //       mostSearched: "🔍 Recent trending searches in Pakistan:\n",
+  //       moreInfo: "News and details below \n\n"
+  //     },
+  //     relatedQueries: '🔍 Related Searches: ',
+  //     detailedStats: '📊 Detailed Stats: ',
+  //     articles: '📰 News Related:\n',
+  //     thousand: 'K',
+  //     million: 'M',
+  //     searches: 'searches',
+  //     imageTitle: 'Recent trending searches in Pakistan:'
+  //   },
+  //   accountName: '@PakistanGoogle1',
+  // },
+  // AT: {
+  //   twitterConfig: {
+  //     consumer_key: process.env.CONSUMER_KEY,
+  //     consumer_secret: process.env.CONSUMER_SECRET,
+  //     access_token_key: process.env.AT_ACCESS_TOKEN_KEY,
+  //     access_token_secret: process.env.AT_ACCESS_TOKEN_SECRET
+  //   },
+  //   lite: true,
+  //   locale: 'de-at',
+  //   timezone: 'Europe/Vienna',
+  //   phrases: {
+  //     firstTweet: {
+  //       mostSearched: "🔍 Neueste trende Suchen in Österreich:\n",
+  //       moreInfo: "Nachrichten und Details unten \n\n"
+  //     },
+  //     relatedQueries: '🔍 Zusammenhängende Suchen: ',
+  //     detailedStats: '📊 Detaillierte Statistiken: ',
+  //     articles: '📰 Betreffende Nachrichte:\n',
+  //     thousand: 'K',
+  //     million: 'M',
+  //     searches: 'Suchen',
+  //     imageTitle: 'Neueste trende Suchen in Österreich:'
+  //   },
+  //   accountName: '@PakistanGoogle1',
+  // },
+  // CH: {
+  //   twitterConfig: {
+  //     consumer_key: process.env.CONSUMER_KEY,
+  //     consumer_secret: process.env.CONSUMER_SECRET,
+  //     access_token_key: process.env.CH_ACCESS_TOKEN_KEY,
+  //     access_token_secret: process.env.CH_ACCESS_TOKEN_SECRET
+  //   },
+  //   locale: 'de',
+  //   timezone: 'Europe/Zurich',
+  //   lite: true,
+  //   phrases: {
+  //     firstTweet: {
+  //       mostSearched: "🔍 Neueste trende Suchen in der Schweiz:\n",
+  //       moreInfo: "Nachrichten und Details unten \n\n"
+  //     },
+  //     relatedQueries: '🔍 Zusammenhängende Suchen: ',
+  //     detailedStats: '📊 Detaillierte Statistiken: ',
+  //     articles: '📰 Betreffende Nachrichte:\n',
+  //     thousand: 'K',
+  //     million: 'M',
+  //     searches: 'Suchen',
+  //     imageTitle: 'Neueste trende Suchen in der Schweiz:'
+  //   },
+  //   accountName: '@GoogleSchweiz'
+  // },
 };
