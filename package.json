@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "node -e \"require('./index.js').tweetDailyTrend({data:'VFI='})\"",
+    "test": "NODE_ENV=test node -e \"require('./index.js').tweetDailyTrend()\"",
     "deploy": "gcloud config configurations activate config24trends && gcloud functions deploy tweetDailyTrend --runtime nodejs12 --trigger-topic tweet",
     "deploy-lite": "gcloud config configurations activate config24trends && gcloud functions deploy tweetDailyTrendLite --runtime nodejs12 --trigger-topic tweetLite"
   },
