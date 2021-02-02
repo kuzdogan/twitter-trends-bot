@@ -341,10 +341,11 @@ class TrendTweeter {
 
 // Utility functions
 
-// from https://stackoverflow.com/questions/784586/convert-special-characters-to-html-in-javascript
+// from https://stackoverflow.com/a/7394787/6528944 
 function decodeHtmlCharCodes(str) {
-  return str.replace(/(&#(\d+);)/g, (match, capture, charCode) =>
-    String.fromCharCode(charCode));
+  var txt = document.createElement("textarea");
+  txt.innerHTML = str;
+  return txt.value;
 }
 
 function formatDetailedTrendsObjects(trends) {
