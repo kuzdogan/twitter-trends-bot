@@ -88,8 +88,8 @@ module.exports = {
     lite: true,
     phrases: {
       firstTweet: {
-        mostSearched: "🔍 Neueste trende Suchen in Deutschland:\n",
-        moreInfo: "Nachrichten und Details unten \n\n"
+        mostSearched: "🔍 Die neuesten Trendthemen in Deutschland:\n",
+        moreInfo: "Schlagzeilen und Details sind unten aufgelistet \n\n"
       },
       relatedQueries: '🔍 Zusammenhängende Suchen: ',
       detailedStats: '📊 Detaillierte Statistiken: ',
@@ -97,7 +97,7 @@ module.exports = {
       thousand: 'K',
       million: 'M',
       searches: 'Suchen',
-      imageTitle: 'Neueste trende Suchen in Deutschland:'
+      imageTitle: 'Die neuesten Trendthemen in Deutschland:'
     },
     accountName: '@24trendsDE'
   },
@@ -151,31 +151,31 @@ module.exports = {
     },
     accountName: '@24trendsAU',
   },
-  // NZ: {
-  //   twitterConfig: {
-  //     consumer_key: process.env.CONSUMER_KEY,
-  //     consumer_secret: process.env.CONSUMER_SECRET,
-  //     access_token_key: process.env.NZ_ACCESS_TOKEN_KEY,
-  //     access_token_secret: process.env.NZ_ACCESS_TOKEN_SECRET
-  //   },
-  //   lite: true,
-  //   locale: 'en-nz',
-  //   timezone: 'Pacific/Auckland',
-  //   phrases: {
-  //     firstTweet: {
-  //       mostSearched: "🔍 Recent trending searches in New Zealand:\n",
-  //       moreInfo: "News and details below \n\n"
-  //     },
-  //     relatedQueries: '🔍 Related Searches: ',
-  //     detailedStats: '📊 Detailed Stats: ',
-  //     articles: '📰 News Related:\n',
-  //     thousand: 'K',
-  //     million: 'M',
-  //     searches: 'searches',
-  //     imageTitle: 'Recent trending searches in New Zealand:'
-  //   },
-  //   accountName: '@GoogleZealand',
-  // },
+  NZ: {
+    twitterConfig: {
+      consumer_key: process.env.CONSUMER_KEY,
+      consumer_secret: process.env.CONSUMER_SECRET,
+      access_token_key: process.env.NZ_ACCESS_TOKEN_KEY,
+      access_token_secret: process.env.NZ_ACCESS_TOKEN_SECRET
+    },
+    lite: true,
+    locale: 'en-nz',
+    timezone: 'Pacific/Auckland',
+    phrases: {
+      firstTweet: {
+        mostSearched: "🔍 Recent trending searches in New Zealand:\n",
+        moreInfo: "News and details below \n\n"
+      },
+      relatedQueries: '🔍 Related Searches: ',
+      detailedStats: '📊 Detailed Stats: ',
+      articles: '📰 News Related:\n',
+      thousand: 'K',
+      million: 'M',
+      searches: 'searches',
+      imageTitle: 'Recent trending searches in New Zealand:'
+    },
+    accountName: '@ZealandGoogle',
+  },
   CA: {
     twitterConfig: {
       consumer_key: process.env.CONSUMER_KEY,
@@ -199,9 +199,9 @@ module.exports = {
       searches: 'searches',
       imageTitle: 'Recent trending searches in Canada:'
     },
-    accountName: '@CanadaGoogleTr1',
+    accountName: '@CanadaGoogleTr2',
   },
-  // PK: {
+  // PK: { // Google Trends API does not resolve for pakistan
   //   twitterConfig: {
   //     consumer_key: process.env.CONSUMER_KEY,
   //     consumer_secret: process.env.CONSUMER_SECRET,
@@ -224,56 +224,56 @@ module.exports = {
   //     searches: 'searches',
   //     imageTitle: 'Recent trending searches in Pakistan:'
   //   },
-  //   accountName: '@PakistanGoogle1',
+  //   accountName: '@GooglePakistan',
   // },
-  // AT: {
-  //   twitterConfig: {
-  //     consumer_key: process.env.CONSUMER_KEY,
-  //     consumer_secret: process.env.CONSUMER_SECRET,
-  //     access_token_key: process.env.AT_ACCESS_TOKEN_KEY,
-  //     access_token_secret: process.env.AT_ACCESS_TOKEN_SECRET
-  //   },
-  //   lite: true,
-  //   locale: 'de-at',
-  //   timezone: 'Europe/Vienna',
-  //   phrases: {
-  //     firstTweet: {
-  //       mostSearched: "🔍 Neueste trende Suchen in Österreich:\n",
-  //       moreInfo: "Nachrichten und Details unten \n\n"
-  //     },
-  //     relatedQueries: '🔍 Zusammenhängende Suchen: ',
-  //     detailedStats: '📊 Detaillierte Statistiken: ',
-  //     articles: '📰 Betreffende Nachrichte:\n',
-  //     thousand: 'K',
-  //     million: 'M',
-  //     searches: 'Suchen',
-  //     imageTitle: 'Neueste trende Suchen in Österreich:'
-  //   },
-  //   accountName: '@PakistanGoogle1',
-  // },
-  // CH: {
-  //   twitterConfig: {
-  //     consumer_key: process.env.CONSUMER_KEY,
-  //     consumer_secret: process.env.CONSUMER_SECRET,
-  //     access_token_key: process.env.CH_ACCESS_TOKEN_KEY,
-  //     access_token_secret: process.env.CH_ACCESS_TOKEN_SECRET
-  //   },
-  //   locale: 'de',
-  //   timezone: 'Europe/Zurich',
-  //   lite: true,
-  //   phrases: {
-  //     firstTweet: {
-  //       mostSearched: "🔍 Neueste trende Suchen in der Schweiz:\n",
-  //       moreInfo: "Nachrichten und Details unten \n\n"
-  //     },
-  //     relatedQueries: '🔍 Zusammenhängende Suchen: ',
-  //     detailedStats: '📊 Detaillierte Statistiken: ',
-  //     articles: '📰 Betreffende Nachrichte:\n',
-  //     thousand: 'K',
-  //     million: 'M',
-  //     searches: 'Suchen',
-  //     imageTitle: 'Neueste trende Suchen in der Schweiz:'
-  //   },
-  //   accountName: '@GoogleSchweiz'
-  // },
+  AT: {
+    twitterConfig: {
+      consumer_key: process.env.CONSUMER_KEY,
+      consumer_secret: process.env.CONSUMER_SECRET,
+      access_token_key: process.env.AT_ACCESS_TOKEN_KEY,
+      access_token_secret: process.env.AT_ACCESS_TOKEN_SECRET
+    },
+    lite: true,
+    locale: 'de-at',
+    timezone: 'Europe/Vienna',
+    phrases: {
+      firstTweet: {
+        mostSearched: "🔍 Die neuesten Trendthemen in in Österreich:\n",
+        moreInfo: "Schlagzeilen und Details sind unten aufgelistet \n\n"
+      },
+      relatedQueries: '🔍 Zusammenhängende Suchen: ',
+      detailedStats: '📊 Detaillierte Statistiken: ',
+      articles: '📰 Betreffende Nachrichte:\n',
+      thousand: 'K',
+      million: 'M',
+      searches: 'Suchen',
+      imageTitle: 'Die neuesten Trendthemen in Österreich:'
+    },
+    accountName: '@AustriaGoogle',
+  },
+  CH: {
+    twitterConfig: {
+      consumer_key: process.env.CONSUMER_KEY,
+      consumer_secret: process.env.CONSUMER_SECRET,
+      access_token_key: process.env.CH_ACCESS_TOKEN_KEY,
+      access_token_secret: process.env.CH_ACCESS_TOKEN_SECRET
+    },
+    locale: 'de',
+    timezone: 'Europe/Zurich',
+    lite: true,
+    phrases: {
+      firstTweet: {
+        mostSearched: "🔍 Die neuesten Trendthemen in der Schweiz:\n",
+        moreInfo: "Schlagzeilen und Details sind unten aufgelistet \n\n"
+      },
+      relatedQueries: '🔍 Zusammenhängende Suchen: ',
+      detailedStats: '📊 Detaillierte Statistiken: ',
+      articles: '📰 Betreffende Nachrichte:\n',
+      thousand: 'K',
+      million: 'M',
+      searches: 'Suchen',
+      imageTitle: 'Die neuesten Trendthemen in der Schweiz:'
+    },
+    accountName: '@SchweizGoogle'
+  },
 };
