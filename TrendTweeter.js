@@ -343,9 +343,20 @@ class TrendTweeter {
 
 // from https://stackoverflow.com/a/7394787/6528944 
 function decodeHtmlCharCodes(str) {
-  var txt = document.createElement("textarea");
-  txt.innerHTML = str;
-  return txt.value;
+  var translate_re = /&(nbsp|amp|quot|lt|gt);/g;
+  var translate = {
+    "nbsp": " ",
+    "amp": "&",
+    "quot": "\"",
+    "lt": "<",
+    "gt": ">"
+  };
+  return str.replace(translate_re, function (match, entity) {
+    return translate[entity];
+  }).replace(/&#(\d+);/gi, function (match, numStr) {
+    var num = parseInt(numStr, 10);
+    return String.fromCharCode(num);
+  });
 }
 
 function formatDetailedTrendsObjects(trends) {
