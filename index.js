@@ -9,7 +9,8 @@ function tweetDailyTrend(message, context) { // message and context for Google C
     let date = moment().tz(config[country].timezone).locale(config[country].locale);
     console.log(country)
     if (process.env.NODE_ENV === 'test') { // dev test
-      if (country === 'DE') { // Debug
+      if (country === process.argv[1]) { // Debug
+        console.log('Testing ' + country)
         tweetDailyTrendForCountry(country, date)
       }
     } else {
