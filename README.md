@@ -11,8 +11,16 @@ List of [timezones](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
 To get access token key & secret:
 
 ```
-(export $(grep -v '^#' .env | xargs) && twurl authorize --consumer-key $CONSUMER_KEY --consumer-secret $CONSUMER_SECRET)
+bash auth.sh
 ```
+
+To test a single country
+
+```
+npm run test <country-code>
+```
+
+e.g. `npm run test NZ`
 
 the `ACCESS_TOKEN_KEY` and `ACCESS_TOKEN_SECRET` can be found at
 
