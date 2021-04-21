@@ -120,51 +120,51 @@ class TrendTweeter {
         tweetStr += this.phrases.relatedQueries + queriesStr + '\n';
       }
       tweetLength = tweetStr.length;
-      console.log('Tweet: ' + tweetStr);
-      console.log('Tweet length: ' + tweetLength);
+      // console.log('Tweet: ' + tweetStr);
+      // console.log('Tweet length: ' + tweetLength);
 
       tweetStr += this.phrases.detailedStats + trend.moreInfo + '\n'; // trend.moreInfo is a URL
       tweetLength += this.phrases.detailedStats.length + this.tco_URL_length + 1; // dont add trend.moreInfo.length, use short URL length.
-      console.log('Tweet: ' + tweetStr);
-      console.log('Tweet length: ' + tweetLength);
+      // console.log('Tweet: ' + tweetStr);
+      // console.log('Tweet length: ' + tweetLength);
 
       // Add each ARTICLE_COUNNT articles as new line, in same tweet if possible. Else in the next tweet.
       for (let i = 0; i < Math.min(this.articleCount, trend.articles.length); i++) {
         if (i === 0) {
           tweetStr += this.phrases.articles;
           tweetLength += this.phrases.articles.length;
-          console.log('Tweet: ' + tweetStr);
-          console.log('Tweet length: ' + tweetLength);
+          // console.log('Tweet: ' + tweetStr);
+          // console.log('Tweet length: ' + tweetLength);
         }
         let article = trend.articles[i];
         // Article line
         let articleStr = `${article.source}: ${decodeHtmlCharCodes(article.title)}\n${article.url}\n`;
         let articleStrLength = article.source.length + decodeHtmlCharCodes(article.title).length + 5 + this.tco_URL_length;
-        console.log('Current tweet: ' + tweetStr);
-        console.log('New article line: ', articleStr);
+        // console.log('Current tweet: ' + tweetStr);
+        // console.log('New article line: ', articleStr);
 
         // Check total tweet length.
         let temp = tweetStr + articleStr;
         let tempLength = tweetLength + articleStrLength;
-        console.log('tempLength: ' + tempLength);
+        // console.log('tempLength: ' + tempLength);
         // Add new line if still shorter than 280
         if (tempLength < 270) {
-          console.log('Assigning temp to tweet');
+          // console.log('Assigning temp to tweet');
           tweetStr = temp;
           tweetLength = tempLength;
         }
         else { // Start new tweet if exceeds
           tweetStr = decodeHtmlCharCodes(tweetStr); // Decode &#39, &quot etc.
-          console.log('Too long, starting new tweet');
-          console.log('tweet: ', tweetStr);
+          // console.log('Too long, starting new tweet');
+          // console.log('tweet: ', tweetStr);
           tweets.push(tweetStr);
           tweetStr = articleStr;
           tweetLength = articleStrLength;
         }
       }
       tweetStr = decodeHtmlCharCodes(tweetStr); // Decode &#39, &quot etc.
-      console.log('Articles done, start new tweet');
-      console.log('tweet: ', tweetStr);
+      // console.log('Articles done, start new tweet');
+      // console.log('tweet: ', tweetStr);
       tweets.push(tweetStr); // Articles end. New trend. Start new tweet.
       tweetStr = '';
       tweetLength = 0;
@@ -178,18 +178,18 @@ class TrendTweeter {
    * @param {Array} summaryTrends 
    */
   trendsToImage = async (detailedTrends) => {
-    console.log('Registering Light font')
+    // console.log('Registering Light font')
     registerFont('assets/Roboto-Light.ttf', { family: 'Roboto', weight: 300 })
-    console.log('Registered Light font')
-    console.log('Registering Regular font')
+    // console.log('Registered Light font')
+    // console.log('Registering Regular font')
     registerFont('assets/Roboto-Regular.ttf', { family: 'Roboto', weight: 400 })
-    console.log('Registered regular font')
-    console.log('Registering Bold font')
+    // console.log('Registered regular font')
+    // console.log('Registering Bold font')
     registerFont('assets/Roboto-Bold.ttf', { family: 'Roboto', weight: 700 })
-    console.log('Registered Bold font')
-    console.log('Creating Canvas')
+    // console.log('Registered Bold font')
+    // console.log('Creating Canvas')
     const canvas = createCanvas(this.width, this.height);
-    console.log('Created Canvas')
+    // console.log('Created Canvas')
     const textMarginTop = 120;
     const textMarginX = 64;
     const context = canvas.getContext('2d');
@@ -200,13 +200,13 @@ class TrendTweeter {
     context.fillStyle = '#000'
     context.textAlign = 'left'
 
-    console.log('Loading image')
+    // console.log('Loading image')
     let image = await loadImage('assets/logo.png')
-    console.log('Loaded image')
+    // console.log('Loaded image')
 
-    console.log('Drawing image')
+    // console.log('Drawing image')
     context.drawImage(image, textMarginX, 16, 128, 128)
-    console.log('Drawed image')
+    // console.log('Drawed image')
 
     context.font = 'bold 24pt Roboto'
     context.fillText(this.accountName, 200, 80);
@@ -214,7 +214,7 @@ class TrendTweeter {
     context.font = '12pt Roboto'
     context.fillText(explaination, 200, 110)
 
-    console.log('Starting for loop')
+    // console.log('Starting for loop')
     for (let i = 0; i < detailedTrends.length; i++) {
       // Split canvas into two columns with max 10 items
       let lineX = (i > 9) ? textMarginX + this.width / 2 - 24 : textMarginX;
@@ -225,26 +225,26 @@ class TrendTweeter {
       const count = trend.count.slice(0, -2) + this.replaceCountLetter(trend.count) + "+";
       const summary = `${trend.articles[0].source}: ${decodeHtmlCharCodes(trend.articles[0].title)}`
 
-      console.log('Writing title ' + title)
+      // console.log('Writing title ' + title)
       // Title
       context.font = 'bold 12pt Roboto'
       context.fillText(title, lineX, lineY);
       let titleWidth = context.measureText(title).width;
-      console.log('Wrote title')
+      // console.log('Wrote title')
 
-      console.log('Writing count')
+      // console.log('Writing count')
       // Search count
       context.font = '300 11pt Roboto'
       context.fillText(' — ' + count + ' ' + this.phrases.searches, lineX + titleWidth, lineY);
-      console.log('Wrote count')
+      // console.log('Wrote count')
 
-      console.log('Writing summary')
+      // console.log('Writing summary')
       // Summary
       context.font = '300 11pt Roboto'
       context.fillText(truncate(summary, 74), lineX, lineY + 20)
-      console.log('Wrote summary')
+      // console.log('Wrote summary')
     }
-    console.log('End for loop')
+    // console.log('End for loop')
     // const buffer = canvas.toBuffer('image/png')
     // fs.writeFileSync('./test.png', buffer)
     return canvas.toBuffer('image/png')
@@ -322,7 +322,6 @@ class TrendTweeter {
   getTCoLinkLength = () => {
     return this.Twitter.get('help/configuration', {})
       .then(response => response.short_url_length_https)
-      .catch(console.err);
   }
 
   replaceCountLetter = (trendCountStr) => {

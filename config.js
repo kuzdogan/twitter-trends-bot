@@ -33,7 +33,7 @@ module.exports = {
       access_token_key: process.env.USA_ACCESS_TOKEN_KEY,
       access_token_secret: process.env.USA_ACCESS_TOKEN_SECRET
     },
-    lite: true,
+    lite: false,
     locale: 'en-us',
     timezone: 'America/New_York',
     phrases: {
@@ -49,7 +49,7 @@ module.exports = {
       searches: 'searches',
       imageTitle: 'Recent trending searches in the United States:'
     },
-    accountName: '@24TrendsUSA',
+    accountName: '@24Trends_USA',
   },
   IN: {
     twitterConfig: {
@@ -101,19 +101,44 @@ module.exports = {
     },
     accountName: '@24trendsDE'
   },
-  // UK: {
+  GB: {
+    twitterConfig: {
+      consumer_key: process.env.CONSUMER_KEY,
+      consumer_secret: process.env.CONSUMER_SECRET,
+      access_token_key: process.env.GB_ACCESS_TOKEN_KEY,
+      access_token_secret: process.env.GB_ACCESS_TOKEN_SECRET
+    },
+    lite: false,
+    locale: 'en-gb',
+    timezone: 'Europe/London',
+    phrases: {
+      firstTweet: {
+        mostSearched: "🔍 Recent trending searches in the United Kingdom:\n",
+        moreInfo: "News and details below \n\n"
+      },
+      relatedQueries: '🔍 Related Searches: ',
+      detailedStats: '📊 Detailed Stats: ',
+      articles: '📰 News Related:\n',
+      thousand: 'K',
+      million: 'M',
+      searches: 'searches',
+      imageTitle: 'Recent trending searches in the United Kingdom:'
+    },
+    accountName: '@24Trends_UK',
+  },
+  // IE: {
   //   twitterConfig: {
   //     consumer_key: process.env.CONSUMER_KEY,
   //     consumer_secret: process.env.CONSUMER_SECRET,
-  //     access_token_key: process.env.UK_ACCESS_TOKEN_KEY,
-  //     access_token_secret: process.env.UK_ACCESS_TOKEN_SECRET
+  //     access_token_key: process.env.IE_ACCESS_TOKEN_KEY,
+  //     access_token_secret: process.env.IE_ACCESS_TOKEN_SECRET
   //   },
   //   lite: true,
-  //   locale: 'en-us',
-  //   timezone: 'America/New_York',
+  //   locale: 'en-ie',
+  //   timezone: 'Europe/Dublin',
   //   phrases: {
   //     firstTweet: {
-  //       mostSearched: "🔍 Recent trending searches in the United Kingdom:\n",
+  //       mostSearched: "🔍 Recent trending searches in Ireland:\n",
   //       moreInfo: "News and details below \n\n"
   //     },
   //     relatedQueries: '🔍 Related Searches: ',
@@ -122,9 +147,9 @@ module.exports = {
   //     thousand: 'K',
   //     million: 'M',
   //     searches: 'searches',
-  //     imageTitle: 'Recent trending searches in the United Kingdom:'
+  //     imageTitle: 'Recent trending searches in Ireland:'
   //   },
-  //   accountName: '@24trendsUK',
+  //   accountName: '@UKGoogleTrends1',
   // },
   AU: {
     twitterConfig: {
@@ -174,7 +199,7 @@ module.exports = {
       searches: 'searches',
       imageTitle: 'Recent trending searches in New Zealand:'
     },
-    accountName: '@ZealandGoogle',
+    accountName: '@24Trends_NZ',
   },
   CA: {
     twitterConfig: {
@@ -199,7 +224,7 @@ module.exports = {
       searches: 'searches',
       imageTitle: 'Recent trending searches in Canada:'
     },
-    accountName: '@CanadaGoogleTr2',
+    accountName: '@24Trends_Canada',
   },
   // PK: { // Google Trends API does not resolve for pakistan
   //   twitterConfig: {
@@ -249,7 +274,7 @@ module.exports = {
       searches: 'Suchen',
       imageTitle: 'Die neuesten Trendthemen in Österreich:'
     },
-    accountName: '@AustriaGoogle',
+    accountName: '@24Trends_AT',
   },
   CH: {
     twitterConfig: {
@@ -274,6 +299,131 @@ module.exports = {
       searches: 'Suchen',
       imageTitle: 'Die neuesten Trendthemen in der Schweiz:'
     },
-    accountName: '@SchweizGoogle'
+    accountName: '@24Trends_CH'
+  },
+  IT: {
+    twitterConfig: {
+      consumer_key: process.env.CONSUMER_KEY,
+      consumer_secret: process.env.CONSUMER_SECRET,
+      access_token_key: process.env.IT_ACCESS_TOKEN_KEY,
+      access_token_secret: process.env.IT_ACCESS_TOKEN_SECRET
+    },
+    locale: 'it',
+    timezone: 'Europe/Rome',
+    lite: true,
+    phrases: {
+      firstTweet: {
+        mostSearched: "🔍 Le più recenti ricerche in Italia:\n",
+        moreInfo: "Novità e dettagli qui sotto \n\n"
+      },
+      relatedQueries: '🔍 Ricerche correlate: ',
+      detailedStats: '📊 Statistiche dettagliate: ',
+      articles: '📰 Ultime novità a riguardo:\n',
+      thousand: 'mille',
+      million: 'mln',
+      searches: 'ricerche',
+      imageTitle: 'Le più recenti ricerche in Italia:'
+    },
+    accountName: '@24Trends_Italia'
+  },
+  // ES: {
+  //   twitterConfig: {
+  //     consumer_key: process.env.CONSUMER_KEY,
+  //     consumer_secret: process.env.CONSUMER_SECRET,
+  //     access_token_key: process.env.ES_ACCESS_TOKEN_KEY,
+  //     access_token_secret: process.env.ES_ACCESS_TOKEN_SECRET
+  //   },
+  //   locale: 'es',
+  //   timezone: 'Europe/Madrid',
+  //   lite: true,
+  //   phrases: {
+  //     firstTweet: {
+  //       mostSearched: "🔍 Últimas búsquedas en tendencia en España:\n",
+  //       moreInfo: "Noticias y detalles más abajo \n\n"
+  //     },
+  //     relatedQueries: '🔍 Búsquedas relacionadas: ',
+  //     detailedStats: '📊 Estadísticas detalladas: ',
+  //     articles: '📰 Noticias relacionadas:\n',
+  //     thousand: 'mille',
+  //     million: 'M',
+  //     searches: 'búsquedas',
+  //     imageTitle: 'Últimas búsquedas en tendencia en España:'
+  //   },
+  //   accountName: '@24Trends_Espana'
+  // },
+  MX: {
+    twitterConfig: {
+      consumer_key: process.env.CONSUMER_KEY,
+      consumer_secret: process.env.CONSUMER_SECRET,
+      access_token_key: process.env.MX_ACCESS_TOKEN_KEY,
+      access_token_secret: process.env.MX_ACCESS_TOKEN_SECRET
+    },
+    locale: 'es-mx',
+    timezone: 'America/Mexico_City',
+    lite: true,
+    phrases: {
+      firstTweet: {
+        mostSearched: "🔍 Últimas búsquedas en tendencia en México:\n",
+        moreInfo: "Noticias y detalles más abajo \n\n"
+      },
+      relatedQueries: '🔍 Búsquedas relacionadas: ',
+      detailedStats: '📊 Estadísticas detalladas: ',
+      articles: '📰 Noticias relacionadas:\n',
+      thousand: 'mille',
+      million: 'M',
+      searches: 'búsquedas',
+      imageTitle: 'Últimas búsquedas en tendencia en México:'
+    },
+    accountName: '@24Trends_Mexico'
+  },
+  CO: {
+    twitterConfig: {
+      consumer_key: process.env.CONSUMER_KEY,
+      consumer_secret: process.env.CONSUMER_SECRET,
+      access_token_key: process.env.CO_ACCESS_TOKEN_KEY,
+      access_token_secret: process.env.CO_ACCESS_TOKEN_SECRET
+    },
+    locale: 'es-mx',
+    timezone: 'America/Bogota',
+    lite: true,
+    phrases: {
+      firstTweet: {
+        mostSearched: "🔍 Últimas búsquedas en tendencia en Colombia:\n",
+        moreInfo: "Noticias y detalles más abajo \n\n"
+      },
+      relatedQueries: '🔍 Búsquedas relacionadas: ',
+      detailedStats: '📊 Estadísticas detalladas: ',
+      articles: '📰 Noticias relacionadas:\n',
+      thousand: 'mille',
+      million: 'M',
+      searches: 'búsquedas',
+      imageTitle: 'Últimas búsquedas en tendencia en Colombia:'
+    },
+    accountName: '@24Trends_CO'
+  },
+  AR: {
+    twitterConfig: {
+      consumer_key: process.env.CONSUMER_KEY,
+      consumer_secret: process.env.CONSUMER_SECRET,
+      access_token_key: process.env.AR_ACCESS_TOKEN_KEY,
+      access_token_secret: process.env.AR_ACCESS_TOKEN_SECRET
+    },
+    locale: 'es-mx',
+    timezone: 'America/Argentina/Buenos_Aires',
+    lite: true,
+    phrases: {
+      firstTweet: {
+        mostSearched: "🔍 Últimas búsquedas en tendencia en Argentina:\n",
+        moreInfo: "Noticias y detalles más abajo \n\n"
+      },
+      relatedQueries: '🔍 Búsquedas relacionadas: ',
+      detailedStats: '📊 Estadísticas detalladas: ',
+      articles: '📰 Noticias relacionadas:\n',
+      thousand: 'mille',
+      million: 'M',
+      searches: 'búsquedas',
+      imageTitle: 'Últimas búsquedas en tendencia en Argentina:'
+    },
+    accountName: '@24Trends_AR'
   },
 };

@@ -26,7 +26,7 @@ function tweetDailyTrendForCountry(country, date) {
   getDailyTrends(geo = country)
     .then(trends => {
       // console.log(trends)
-      console.log('Country changed? ' + country)
+      console.log('Tweet for the country: ' + country)
       let tweeter = new TrendTweeter(country, trends, date);
       console.log('Number of Daily Trends: ' + trends.trendingSearches.length)
       return tweeter.tweetTrends(trends)
@@ -34,7 +34,14 @@ function tweetDailyTrendForCountry(country, date) {
     .then(() => {
       console.log('SUCCESSFULLY TWEETED ');
     })
-    .catch(err => console.error(err));
+    .catch(err => {
+      console.log('Ooops something went wrong');
+      let gcloudError = {
+        severity: 'ERROR',
+        message: 'Error in country ' + country + ' ' + JSON.stringify(err)
+      }
+      console.error(JSON.stringify(gcloudError));
+    });
 }
 
 /**
