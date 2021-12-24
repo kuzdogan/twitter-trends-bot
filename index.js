@@ -48,8 +48,7 @@ function tweetDailyTrendForCountry(country, date) {
       console.error(err);
       let gcloudError = {
         severity: "ERROR",
-        message:
-          "Error in country " + country + " " + JSON.stringify(err.message),
+        message: "Error in country " + country + " " + JSON.stringify(err),
       };
       console.error(JSON.stringify(gcloudError));
     });

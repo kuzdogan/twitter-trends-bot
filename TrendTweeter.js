@@ -191,6 +191,7 @@ class TrendTweeter {
    * @param {Array} summaryTrends
    */
   trendsToImage = async (detailedTrends) => {
+    console.log("Registering fonts");
     // console.log('Registering Light font')
     registerFont("assets/Roboto-Light.ttf", { family: "Roboto", weight: 300 });
     // console.log('Registered Light font')
@@ -203,9 +204,10 @@ class TrendTweeter {
     // console.log('Registering Bold font')
     registerFont("assets/Roboto-Bold.ttf", { family: "Roboto", weight: 700 });
     // console.log('Registered Bold font')
-    // console.log('Creating Canvas')
+    console.log("Registered fonts");
+    console.log("Creating Canvas");
     const canvas = createCanvas(this.width, this.height);
-    // console.log('Created Canvas')
+    console.log("Created Canvas");
     const textMarginTop = 120;
     const textMarginX = 64;
     const context = canvas.getContext("2d");
@@ -219,9 +221,9 @@ class TrendTweeter {
     context.fillStyle = "#000";
     context.textAlign = "left";
 
-    // console.log('Loading image')
+    console.log("Loading image");
     let image = await loadImage("assets/logo.png");
-    // console.log('Loaded image')
+    console.log("Loaded image");
 
     // console.log('Drawing image')
     context.drawImage(image, textMarginX, 16, 128, 128);
@@ -233,7 +235,7 @@ class TrendTweeter {
     context.font = "12pt Roboto";
     context.fillText(explaination, 200, 110);
 
-    // console.log('Starting for loop')
+    console.log("Starting for loop");
     for (let i = 0; i < detailedTrends.length; i++) {
       // Split canvas into two columns with max 10 items
       let lineX = i > 9 ? textMarginX + this.width / 2 - 24 : textMarginX;
@@ -273,7 +275,7 @@ class TrendTweeter {
       context.fillText(truncate(summary, 74), lineX, lineY + 20);
       // console.log('Wrote summary')
     }
-    // console.log('End for loop')
+    console.log("End for loop");
     // const buffer = canvas.toBuffer('image/png')
     // fs.writeFileSync('./test.png', buffer)
     return canvas.toBuffer("image/png");
