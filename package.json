@@ -15,7 +15,7 @@
     "dotenv": "^8.2.0",
     "google-trends-api": "^4.9.0",
     "moment": "^2.27.0",
-    "moment-timezone": "^0.5.31",
+    "moment-timezone": "^0.5.35",
     "twitter": "^1.7.1"
   },
   "devDependencies": {
