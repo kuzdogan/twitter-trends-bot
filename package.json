@@ -16,6 +16,7 @@
     "google-trends-api": "^4.9.0",
     "moment": "^2.29.4",
     "moment-timezone": "^0.5.35",
+    "oauth": "^0.10.0",
     "twitter": "^1.7.1"
   },
   "devDependencies": {
