@@ -38,7 +38,7 @@ function tweetDailyTrendForCountry(country, date) {
       console.log("Tweet for the country: " + country);
       let tweeter = new TrendTweeter(country, trends, date);
       console.log("Number of Daily Trends: " + trends.trendingSearches.length);
-      return tweeter.tweetTrends(trends);
+      return tweeter.tweetTrends();
     })
     .then(() => {
       console.log("SUCCESSFULLY TWEETED ");

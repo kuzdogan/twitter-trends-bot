@@ -3,10 +3,10 @@
 module.exports = {
   TR: {
     twitterConfig: {
-      consumer_key: process.env.CONSUMER_KEY,
-      consumer_secret: process.env.CONSUMER_SECRET,
-      access_token_key: process.env.TR_ACCESS_TOKEN_KEY,
-      access_token_secret: process.env.TR_ACCESS_TOKEN_SECRET,
+      appKey: process.env.CONSUMER_KEY,
+      appSecret: process.env.CONSUMER_SECRET,
+      accessToken: process.env.TR_ACCESS_TOKEN_KEY,
+      accessSecret: process.env.TR_ACCESS_TOKEN_SECRET,
     },
     lite: false,
     locale: "tr",
@@ -29,10 +29,10 @@ module.exports = {
   US: {
     // Use here US only instead of USA. Google trends API library asks US not USA.
     twitterConfig: {
-      consumer_key: process.env.CONSUMER_KEY,
-      consumer_secret: process.env.CONSUMER_SECRET,
-      access_token_key: process.env.USA_ACCESS_TOKEN_KEY,
-      access_token_secret: process.env.USA_ACCESS_TOKEN_SECRET,
+      appKey: process.env.CONSUMER_KEY,
+      appSecret: process.env.CONSUMER_SECRET,
+      accessToken: process.env.USA_ACCESS_TOKEN_KEY,
+      accessSecret: process.env.USA_ACCESS_TOKEN_SECRET,
     },
     lite: false,
     locale: "en-us",
@@ -54,10 +54,10 @@ module.exports = {
   },
   // IN: {
   //   twitterConfig: {
-  //     consumer_key: process.env.CONSUMER_KEY,
-  //     consumer_secret: process.env.CONSUMER_SECRET,
-  //     access_token_key: process.env.IN_ACCESS_TOKEN_KEY,
-  //     access_token_secret: process.env.IN_ACCESS_TOKEN_SECRET
+  //     appKey: process.env.CONSUMER_KEY,
+  //     appSecret: process.env.CONSUMER_SECRET,
+  //     accessToken: process.env.IN_ACCESS_TOKEN_KEY,
+  //     accessSecret: process.env.IN_ACCESS_TOKEN_SECRET
   //   },
   //   locale: 'en-in',
   //   timezone: 'Asia/Kolkata',
@@ -79,10 +79,10 @@ module.exports = {
   // },
   DE: {
     twitterConfig: {
-      consumer_key: process.env.CONSUMER_KEY,
-      consumer_secret: process.env.CONSUMER_SECRET,
-      access_token_key: process.env.DE_ACCESS_TOKEN_KEY,
-      access_token_secret: process.env.DE_ACCESS_TOKEN_SECRET,
+      appKey: process.env.CONSUMER_KEY,
+      appSecret: process.env.CONSUMER_SECRET,
+      accessToken: process.env.DE_ACCESS_TOKEN_KEY,
+      accessSecret: process.env.DE_ACCESS_TOKEN_SECRET,
     },
     locale: "de",
     timezone: "Europe/Berlin",
@@ -104,10 +104,10 @@ module.exports = {
   },
   // GB: {
   //   twitterConfig: {
-  //     consumer_key: process.env.CONSUMER_KEY,
-  //     consumer_secret: process.env.CONSUMER_SECRET,
-  //     access_token_key: process.env.GB_ACCESS_TOKEN_KEY,
-  //     access_token_secret: process.env.GB_ACCESS_TOKEN_SECRET
+  //     appKey: process.env.CONSUMER_KEY,
+  //     appSecret: process.env.CONSUMER_SECRET,
+  //     accessToken: process.env.GB_ACCESS_TOKEN_KEY,
+  //     accessSecret: process.env.GB_ACCESS_TOKEN_SECRET
   //   },
   //   lite: false,
   //   locale: 'en-gb',
@@ -129,10 +129,10 @@ module.exports = {
   // },
   // IE: {
   //   twitterConfig: {
-  //     consumer_key: process.env.CONSUMER_KEY,
-  //     consumer_secret: process.env.CONSUMER_SECRET,
-  //     access_token_key: process.env.IE_ACCESS_TOKEN_KEY,
-  //     access_token_secret: process.env.IE_ACCESS_TOKEN_SECRET
+  //     appKey: process.env.CONSUMER_KEY,
+  //     appSecret: process.env.CONSUMER_SECRET,
+  //     accessToken: process.env.IE_ACCESS_TOKEN_KEY,
+  //     accessSecret: process.env.IE_ACCESS_TOKEN_SECRET
   //   },
   //   lite: true,
   //   locale: 'en-ie',
@@ -154,10 +154,10 @@ module.exports = {
   // },
   AU: {
     twitterConfig: {
-      consumer_key: process.env.CONSUMER_KEY,
-      consumer_secret: process.env.CONSUMER_SECRET,
-      access_token_key: process.env.AU_ACCESS_TOKEN_KEY,
-      access_token_secret: process.env.AU_ACCESS_TOKEN_SECRET,
+      appKey: process.env.CONSUMER_KEY,
+      appSecret: process.env.CONSUMER_SECRET,
+      accessToken: process.env.AU_ACCESS_TOKEN_KEY,
+      accessSecret: process.env.AU_ACCESS_TOKEN_SECRET,
     },
     lite: true,
     locale: "en-au",
@@ -179,10 +179,10 @@ module.exports = {
   },
   // NZ: {
   //   twitterConfig: {
-  //     consumer_key: process.env.CONSUMER_KEY,
-  //     consumer_secret: process.env.CONSUMER_SECRET,
-  //     access_token_key: process.env.NZ_ACCESS_TOKEN_KEY,
-  //     access_token_secret: process.env.NZ_ACCESS_TOKEN_SECRET,
+  //     appKey: process.env.CONSUMER_KEY,
+  //     appSecret: process.env.CONSUMER_SECRET,
+  //     accessToken: process.env.NZ_ACCESS_TOKEN_KEY,
+  //     accessSecret: process.env.NZ_ACCESS_TOKEN_SECRET,
   //   },
   //   lite: true,
   //   locale: "en-nz",
@@ -204,10 +204,10 @@ module.exports = {
   // },
   // CA: {
   //   twitterConfig: {
-  //     consumer_key: process.env.CONSUMER_KEY,
-  //     consumer_secret: process.env.CONSUMER_SECRET,
-  //     access_token_key: process.env.CA_ACCESS_TOKEN_KEY,
-  //     access_token_secret: process.env.CA_ACCESS_TOKEN_SECRET,
+  //     appKey: process.env.CONSUMER_KEY,
+  //     appSecret: process.env.CONSUMER_SECRET,
+  //     accessToken: process.env.CA_ACCESS_TOKEN_KEY,
+  //     accessSecret: process.env.CA_ACCESS_TOKEN_SECRET,
   //   },
   //   lite: true,
   //   locale: "en-ca",
@@ -229,10 +229,10 @@ module.exports = {
   // },
   // PK: { // Google Trends API does not resolve for pakistan
   //   twitterConfig: {
-  //     consumer_key: process.env.CONSUMER_KEY,
-  //     consumer_secret: process.env.CONSUMER_SECRET,
-  //     access_token_key: process.env.PK_ACCESS_TOKEN_KEY,
-  //     access_token_secret: process.env.PK_ACCESS_TOKEN_SECRET
+  //     appKey: process.env.CONSUMER_KEY,
+  //     appSecret: process.env.CONSUMER_SECRET,
+  //     accessToken: process.env.PK_ACCESS_TOKEN_KEY,
+  //     accessSecret: process.env.PK_ACCESS_TOKEN_SECRET
   //   },
   //   lite: true,
   //   locale: 'en-in',
@@ -254,10 +254,10 @@ module.exports = {
   // },
   AT: {
     twitterConfig: {
-      consumer_key: process.env.CONSUMER_KEY,
-      consumer_secret: process.env.CONSUMER_SECRET,
-      access_token_key: process.env.AT_ACCESS_TOKEN_KEY,
-      access_token_secret: process.env.AT_ACCESS_TOKEN_SECRET,
+      appKey: process.env.CONSUMER_KEY,
+      appSecret: process.env.CONSUMER_SECRET,
+      accessToken: process.env.AT_ACCESS_TOKEN_KEY,
+      accessSecret: process.env.AT_ACCESS_TOKEN_SECRET,
     },
     lite: true,
     locale: "de-at",
@@ -279,10 +279,10 @@ module.exports = {
   },
   // CH: {
   //   twitterConfig: {
-  //     consumer_key: process.env.CONSUMER_KEY,
-  //     consumer_secret: process.env.CONSUMER_SECRET,
-  //     access_token_key: process.env.CH_ACCESS_TOKEN_KEY,
-  //     access_token_secret: process.env.CH_ACCESS_TOKEN_SECRET,
+  //     appKey: process.env.CONSUMER_KEY,
+  //     appSecret: process.env.CONSUMER_SECRET,
+  //     accessToken: process.env.CH_ACCESS_TOKEN_KEY,
+  //     accessSecret: process.env.CH_ACCESS_TOKEN_SECRET,
   //   },
   //   locale: "de",
   //   timezone: "Europe/Zurich",
@@ -304,10 +304,10 @@ module.exports = {
   // },
   // IT: {
   //   twitterConfig: {
-  //     consumer_key: process.env.CONSUMER_KEY,
-  //     consumer_secret: process.env.CONSUMER_SECRET,
-  //     access_token_key: process.env.IT_ACCESS_TOKEN_KEY,
-  //     access_token_secret: process.env.IT_ACCESS_TOKEN_SECRET,
+  //     appKey: process.env.CONSUMER_KEY,
+  //     appSecret: process.env.CONSUMER_SECRET,
+  //     accessToken: process.env.IT_ACCESS_TOKEN_KEY,
+  //     accessSecret: process.env.IT_ACCESS_TOKEN_SECRET,
   //   },
   //   locale: "it",
   //   timezone: "Europe/Rome",
@@ -329,10 +329,10 @@ module.exports = {
   // },
   // ES: {
   //   twitterConfig: {
-  //     consumer_key: process.env.CONSUMER_KEY,
-  //     consumer_secret: process.env.CONSUMER_SECRET,
-  //     access_token_key: process.env.ES_ACCESS_TOKEN_KEY,
-  //     access_token_secret: process.env.ES_ACCESS_TOKEN_SECRET
+  //     appKey: process.env.CONSUMER_KEY,
+  //     appSecret: process.env.CONSUMER_SECRET,
+  //     accessToken: process.env.ES_ACCESS_TOKEN_KEY,
+  //     accessSecret: process.env.ES_ACCESS_TOKEN_SECRET
   //   },
   //   locale: 'es',
   //   timezone: 'Europe/Madrid',
@@ -354,10 +354,10 @@ module.exports = {
   // },
   // MX: {
   //   twitterConfig: {
-  //     consumer_key: process.env.CONSUMER_KEY,
-  //     consumer_secret: process.env.CONSUMER_SECRET,
-  //     access_token_key: process.env.MX_ACCESS_TOKEN_KEY,
-  //     access_token_secret: process.env.MX_ACCESS_TOKEN_SECRET,
+  //     appKey: process.env.CONSUMER_KEY,
+  //     appSecret: process.env.CONSUMER_SECRET,
+  //     accessToken: process.env.MX_ACCESS_TOKEN_KEY,
+  //     accessSecret: process.env.MX_ACCESS_TOKEN_SECRET,
   //   },
   //   locale: "es-mx",
   //   timezone: "America/Mexico_City",
@@ -379,10 +379,10 @@ module.exports = {
   // },
   // CO: {
   //   twitterConfig: {
-  //     consumer_key: process.env.CONSUMER_KEY,
-  //     consumer_secret: process.env.CONSUMER_SECRET,
-  //     access_token_key: process.env.CO_ACCESS_TOKEN_KEY,
-  //     access_token_secret: process.env.CO_ACCESS_TOKEN_SECRET,
+  //     appKey: process.env.CONSUMER_KEY,
+  //     appSecret: process.env.CONSUMER_SECRET,
+  //     accessToken: process.env.CO_ACCESS_TOKEN_KEY,
+  //     accessSecret: process.env.CO_ACCESS_TOKEN_SECRET,
   //   },
   //   locale: "es-mx",
   //   timezone: "America/Bogota",
@@ -404,10 +404,10 @@ module.exports = {
   // },
   // AR: {
   //   twitterConfig: {
-  //     consumer_key: process.env.CONSUMER_KEY,
-  //     consumer_secret: process.env.CONSUMER_SECRET,
-  //     access_token_key: process.env.AR_ACCESS_TOKEN_KEY,
-  //     access_token_secret: process.env.AR_ACCESS_TOKEN_SECRET,
+  //     appKey: process.env.CONSUMER_KEY,
+  //     appSecret: process.env.CONSUMER_SECRET,
+  //     accessToken: process.env.AR_ACCESS_TOKEN_KEY,
+  //     accessSecret: process.env.AR_ACCESS_TOKEN_SECRET,
   //   },
   //   locale: "es-mx",
   //   timezone: "America/Argentina/Buenos_Aires",

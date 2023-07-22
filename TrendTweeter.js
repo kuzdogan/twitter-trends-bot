@@ -1,5 +1,5 @@
 require("dotenv").config();
-const Twitter = require("twitter");
+const { TwitterApi, EUploadMimeType } = require("twitter-api-v2");
 const config = require("./config.js");
 const moment = require("moment-timezone");
 const { createCanvas, registerFont, loadImage } = require("canvas");
@@ -9,7 +9,7 @@ class TrendTweeter {
     this.date = date;
     this.country = country;
     this.trends = trends;
-    this.Twitter = new Twitter(config[country].twitterConfig);
+    this.TwitterClient = new TwitterApi(config[country].twitterConfig);
     // t.co endpoint retired see https://twittercommunity.com/t/retiring-the-1-1-configuration-endpoint/153319
     // Seems the url length has not been changing since long time, fixed to 23. Adding 2 more as safeguard
     this.tco_URL_length = 25;
@@ -40,62 +40,53 @@ class TrendTweeter {
       };
       return summaryTrendObj;
     });
-    // tweetsArray as the final array of tweets. Push the list of trends as first tweets.
-    let tweetsArray = this.summaryTrendsToTweets(summaryTrends);
-
     // Extract details: title, related searches and articles
     let detailedTrends = formatDetailedTrendsObjects(this.trends);
 
-    console.log("Creating summary image");
-    let imageSummary = await this.trendsToImage(detailedTrends);
-    console.log("CREATED IMAGE");
+    // TODO: Fix unable to upload image
+    // const firstTweet = this.generateFirstTweetWithSummaryImage(detailedTrends);
+    let tweetsArray = [];
 
-    console.log("Default TCO_LINK_LENGTH: ", this.tco_URL_length);
+    // Next, push the simple list of trends.
+    tweetsArray = tweetsArray.concat(this.summaryTrendsToTweets(summaryTrends));
+
     // Concat detailed news if not lite
     if (!this.lite) {
       tweetsArray = tweetsArray.concat(
         this.splitDetailedTrendsInto280(detailedTrends)
       );
     }
-    return this.tweetThread(imageSummary, tweetsArray);
-    // return retrieveTweet('1286934152231686144').then(obj => console.log(obj)); // For Debugging
+    const result = await this.TwitterClient.v2.tweetThread(tweetsArray);
+    console.log("Posted tweets with ids " + result.map((t) => t.data.id));
   };
 
-  /**
-   * Tweet in sequence. Get status id from previous one and post next as a reply.
-   *
-   * @param {Array} tweetsArray - Array of strings each as a tweet
-   * @param {Object} imageSummary - Initial tweet with a summary PNG of all topics and counts
-   * @returns {String} the status_id of the final tweet
-   */
-  tweetThread = async (imageSummary, tweetsArray) => {
-    if (tweetsArray.length === 0) return Promise.reject("Nothing to tweet");
+  generateFirstTweetWithSummaryImage = async (detailedTrends) => {
+    // Generate the summary image
+    console.log("Creating summary image");
+    let sumarryImageBuffer = await this.trendsToImage(detailedTrends);
+    console.log("CREATED IMAGE");
 
-    let initialTweetMsg =
+    console.log("Sending image to upload");
+    let imageId;
+    try {
+      imageId = await this.TwitterClient.v1.uploadMedia(sumarryImageBuffer, {
+        mimeType: EUploadMimeType.Png,
+      });
+    } catch (err) {
+      console.error(err);
+      throw err;
+    }
+    console.log("Uploaded image, the id is: " + imageId);
+
+    const initialTweetMsg =
       "📆 " +
       this.date.format("D MMMM YYYY dddd H:mm ") +
       "\n" +
       this.phrases.firstTweet.mostSearched +
       this.phrases.firstTweet.moreInfo;
 
-    // Publish the fist tweet
-    let response = await this.tweetImage(imageSummary, initialTweetMsg);
-    console.log("First tweet id: " + response.id_str);
-    let prevIdStr = response.id_str;
-    let username = response.user.screen_name;
-
-    // Publish reply tweets
-    for (let i = 0; i < tweetsArray.length; i++) {
-      let tweetStr = tweetsArray[i];
-      console.log(`Prev Id: \t\t ${prevIdStr}`);
-      console.log("Tweet: ", tweetStr);
-      response = await this.reply(tweetStr, prevIdStr, username);
-      console.log("Tweet " + i + " is tweeted!!");
-      console.log(`Response id: \t\t ${response.id_str}`);
-      prevIdStr = response.id_str;
-    }
-
-    return prevIdStr;
+    const tweet = { text: initialTweetMsg, media: { media_ids: [imageId] } };
+    return tweet;
   };
 
   /**
@@ -178,7 +169,7 @@ class TrendTweeter {
       tweetStr = decodeHtmlCharCodes(tweetStr); // Decode &#39, &quot etc.
       // console.log('Articles done, start new tweet');
       // console.log('tweet: ', tweetStr);
-      tweets.push(tweetStr); // Articles end. New trend. Start new tweet.
+      tweets.push({ text: tweetStr }); // Articles end. New trend. Start new tweet.
       tweetStr = "";
       tweetLength = 0;
     });
@@ -278,7 +269,11 @@ class TrendTweeter {
     console.log("End for loop");
     // const buffer = canvas.toBuffer('image/png')
     // fs.writeFileSync('./test.png', buffer)
-    return canvas.toBuffer("image/png");
+    const base64 = canvas
+      .toDataURL("image/jpg")
+      .replace(/^data:image\/\w+;base64,/, "");
+    const buff = Buffer.from(base64, "base64");
+    return buff;
   };
 
   /**
@@ -313,48 +308,13 @@ class TrendTweeter {
       // Push as new tweet if exceeds 280 chars.
       if (temp.length < 250) str = temp;
       else {
-        tweets.push(str);
+        tweets.push({ text: str });
         str = newLine;
       }
     });
-    tweets.push(str);
+    tweets.push({ text: str });
 
     return tweets;
-  };
-
-  /**
-   * (Utility function) Send a POST request to the Twitter API
-   * @param String endpoint  e.g. 'statuses/upload'
-   * @param Object params    Params object to send
-   * @return Promise         Rejects if response is error
-   */
-  makePost = (endpoint, params) => {
-    return this.Twitter.post(endpoint, params);
-  };
-
-  tweet = (status) => {
-    return this.makePost("statuses/update", { status: status });
-  };
-
-  tweetImage = (image, status) => {
-    return this.makePost("media/upload", { media: image }).then((mediaObj) => {
-      return this.makePost("statuses/update", {
-        status: status,
-        media_ids: mediaObj.media_id_string,
-      });
-    });
-  };
-
-  reply = (status, prevIdStr, username) => {
-    return this.makePost("statuses/update", {
-      status: status,
-      in_reply_to_status_id: prevIdStr,
-      auto_populate_reply_metadata: true,
-    });
-  };
-
-  retrieveTweet = (id) => {
-    return this.Twitter.get("statuses/show", { id: id });
   };
 
   replaceCountLetter = (trendCountStr) => {

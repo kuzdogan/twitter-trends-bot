@@ -17,7 +17,7 @@
     "moment": "^2.29.4",
     "moment-timezone": "^0.5.35",
     "oauth": "^0.10.0",
-    "twitter": "^1.7.1"
+    "twitter-api-v2": "1.15.0"
   },
   "devDependencies": {
     "@google-cloud/functions-framework": "^2.1.0"
