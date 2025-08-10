@@ -33,8 +33,15 @@ class TrendTweeter {
    * @returns {Promise}
    */
   tweetTrends = async () => {
+    // Limit number of trends to avoid overwhelming the API
+    const maxTrends = this.lite ? 5 : 10;
+    const limitedTrends = { 
+      ...this.trends, 
+      trendingSearches: this.trends.trendingSearches.slice(0, maxTrends) 
+    };
+    
     // Extract title and count for summary
-    let summaryTrends = this.trends.trendingSearches.map((trendObj) => {
+    let summaryTrends = limitedTrends.trendingSearches.map((trendObj) => {
       let summaryTrendObj = {
         title: trendObj.title.query,
         count: trendObj.formattedTraffic,
@@ -42,7 +49,7 @@ class TrendTweeter {
       return summaryTrendObj;
     });
     // Extract details: title, related searches and articles
-    let detailedTrends = formatDetailedTrendsObjects(this.trends);
+    let detailedTrends = formatDetailedTrendsObjects(limitedTrends);
 
     // Generate first tweet with summary image
     const firstTweet = await this.generateFirstTweetWithSummaryImage(detailedTrends);
@@ -55,7 +62,8 @@ class TrendTweeter {
     if (!this.lite) {
       tweetsArray = tweetsArray.concat(this.splitDetailedTrendsInto280(detailedTrends));
     }
-    const result = await this.TwitterClient.v2.tweetThread(tweetsArray);
+    // Post tweets with delays to avoid rate limiting
+    const result = await this.postTweetsWithDelay(tweetsArray);
     console.log("Posted tweets with ids " + result.map((t) => t.data.id));
   };
 
@@ -283,6 +291,85 @@ class TrendTweeter {
     tweets.push({ text: str });
 
     return tweets;
+  };
+
+  /**
+   * Post tweets with delays between each tweet to avoid rate limiting
+   * @param {Array} tweetsArray - Array of tweet objects
+   * @returns {Promise<Array>} - Array of posted tweet results
+   */
+  postTweetsWithDelay = async (tweetsArray) => {
+    const results = [];
+    let previousTweetId = null;
+    
+    for (let i = 0; i < tweetsArray.length; i++) {
+      const tweet = tweetsArray[i];
+      
+      // Add reply_to for threading if not the first tweet
+      if (previousTweetId && i > 0) {
+        tweet.reply = { in_reply_to_tweet_id: previousTweetId };
+      }
+      
+      try {
+        console.log(`Posting tweet ${i + 1}/${tweetsArray.length}`);
+        const result = await this.TwitterClient.v2.tweet(tweet);
+        results.push(result);
+        previousTweetId = result.data.id;
+        
+        // Add delay between tweets (except after the last one)
+        if (i < tweetsArray.length - 1) {
+          const delay = this.calculateDelay(i, tweetsArray.length);
+          console.log(`Waiting ${delay/1000}s before next tweet...`);
+          await this.sleep(delay);
+        }
+        
+      } catch (error) {
+        console.error(`Failed to post tweet ${i + 1}:`, error);
+        
+        // If we get rate limited, wait longer and retry once
+        if (error.code === 429 || error.data?.errors?.[0]?.code === 88) {
+          console.log('Rate limited - waiting 60 seconds before retry...');
+          await this.sleep(60000);
+          
+          try {
+            const result = await this.TwitterClient.v2.tweet(tweet);
+            results.push(result);
+            previousTweetId = result.data.id;
+          } catch (retryError) {
+            console.error(`Retry failed for tweet ${i + 1}:`, retryError);
+            throw retryError;
+          }
+        } else {
+          throw error;
+        }
+      }
+    }
+    
+    return results;
+  };
+
+  /**
+   * Calculate delay between tweets based on position in thread
+   * @param {number} index - Current tweet index
+   * @param {number} total - Total number of tweets
+   * @returns {number} - Delay in milliseconds
+   */
+  calculateDelay = (index, total) => {
+    // Base delay of 10 seconds, increasing for later tweets
+    const baseDelay = 10000;
+    const incrementalDelay = index * 5000; // Add 5s for each subsequent tweet
+    const maxDelay = 30000; // Maximum 30 seconds
+    
+    return Math.min(baseDelay + incrementalDelay, maxDelay);
+  };
+
+  /**
+   * Sleep for specified milliseconds
+   * @param {number} ms - Milliseconds to sleep
+   * @returns {Promise} - Promise that resolves after delay
+   */
+  sleep = (ms) => {
+    return new Promise(resolve => setTimeout(resolve, ms));
   };
 
   replaceCountLetter = (trendCountStr) => {
