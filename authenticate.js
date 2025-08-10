@@ -1,65 +1,45 @@
-const OAuth = require("oauth").OAuth;
-require("dotenv").config();
+const axios = require("axios");
 const readline = require("readline");
+require("dotenv").config();
 
 const API_KEY = process.env.CONSUMER_KEY;
 const API_KEY_SECRET = process.env.CONSUMER_SECRET;
-
-const REQUEST_TOKEN_URL = "https://api.twitter.com/oauth/request_token";
-const ACCESS_TOKEN_URL = "https://api.twitter.com/oauth/access_token";
-const OAUTH_VERSION = "1.0A";
-const HASH_VERSION = "HMAC-SHA1";
+const TOKEN_ENDPOINT = "https://api.x.com/oauth2/token";
 
 const rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout,
 });
 
-let oauth = new OAuth(
-  REQUEST_TOKEN_URL,
-  ACCESS_TOKEN_URL,
-  API_KEY,
-  API_KEY_SECRET,
-  OAUTH_VERSION,
-  null,
-  HASH_VERSION
-);
+async function obtainBearerToken() {
+  try {
+    const credentials = Buffer.from(`${API_KEY}:${API_KEY_SECRET}`).toString("base64");
 
-// Step 1: Get a request token
-oauth.getOAuthRequestToken(
-  (error, oauth_token, oauth_token_secret, results) => {
-    if (error) {
-      console.error("Error getting OAuth request token: ", error);
+    const response = await axios.post(TOKEN_ENDPOINT, "grant_type=client_credentials", {
+      headers: {
+        Authorization: `Basic ${credentials}`,
+        "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+      },
+    });
+
+    if (response.data.token_type === "bearer") {
+      return response.data.access_token;
     } else {
-      // Step 2: Redirect to the authorization page
-      console.log(`Please visit this URL to authorize the application:`);
-      console.log(
-        `https://api.twitter.com/oauth/authorize?oauth_token=${oauth_token}`
-      );
-
-      // Ask user for the verifier code
-      rl.question(
-        "Please enter the verifier code: (Found at the new URL you're being directed to under the `oauth_verifier` parameter) ",
-        (verifier) => {
-          // Step 3: User returns with verifier code, get the access token
-          oauth.getOAuthAccessToken(
-            oauth_token,
-            oauth_token_secret,
-            verifier,
-            (error, oauth_access_token, oauth_access_token_secret, results) => {
-              if (error) {
-                console.error("Error getting OAuth access token", error);
-              } else {
-                console.log(`Access Token: ${oauth_access_token}`);
-                console.log(
-                  `Access Token Secret: ${oauth_access_token_secret}`
-                );
-                rl.close();
-              }
-            }
-          );
-        }
-      );
+      console.error("Failed to obtain bearer token");
+      return null;
     }
+  } catch (error) {
+    console.error("Error obtaining bearer token:", error);
+    return null;
   }
-);
+}
+
+async function main() {
+  const bearerToken = await obtainBearerToken();
+  if (bearerToken) {
+    console.log(`Bearer Token: ${bearerToken}`);
+  }
+  rl.close();
+}
+
+main();

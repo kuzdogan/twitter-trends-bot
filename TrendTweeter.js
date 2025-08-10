@@ -2,7 +2,8 @@ require("dotenv").config();
 const { TwitterApi, EUploadMimeType } = require("twitter-api-v2");
 const config = require("./config.js");
 const moment = require("moment-timezone");
-const { createCanvas, registerFont, loadImage } = require("canvas");
+const { createCanvas, GlobalFonts, loadImage } = require("@napi-rs/canvas");
+const fs = require("fs");
 
 class TrendTweeter {
   constructor(country, trends, date) {
@@ -43,18 +44,16 @@ class TrendTweeter {
     // Extract details: title, related searches and articles
     let detailedTrends = formatDetailedTrendsObjects(this.trends);
 
-    // TODO: Fix unable to upload image
-    // const firstTweet = this.generateFirstTweetWithSummaryImage(detailedTrends);
-    let tweetsArray = [];
+    // Generate first tweet with summary image
+    const firstTweet = await this.generateFirstTweetWithSummaryImage(detailedTrends);
+    let tweetsArray = [firstTweet];
 
     // Next, push the simple list of trends.
     tweetsArray = tweetsArray.concat(this.summaryTrendsToTweets(summaryTrends));
 
     // Concat detailed news if not lite
     if (!this.lite) {
-      tweetsArray = tweetsArray.concat(
-        this.splitDetailedTrendsInto280(detailedTrends)
-      );
+      tweetsArray = tweetsArray.concat(this.splitDetailedTrendsInto280(detailedTrends));
     }
     const result = await this.TwitterClient.v2.tweetThread(tweetsArray);
     console.log("Posted tweets with ids " + result.map((t) => t.data.id));
@@ -66,15 +65,25 @@ class TrendTweeter {
     let sumarryImageBuffer = await this.trendsToImage(detailedTrends);
     console.log("CREATED IMAGE");
 
+    fs.writeFileSync("./summaryImage.png", sumarryImageBuffer);
+
     console.log("Sending image to upload");
     let imageId;
     try {
+      // Updated for Twitter API v2 - use v1 for media upload which is still supported
       imageId = await this.TwitterClient.v1.uploadMedia(sumarryImageBuffer, {
         mimeType: EUploadMimeType.Png,
       });
     } catch (err) {
-      console.error(err);
-      throw err;
+      console.error("Failed to upload media:", err);
+      // Fallback: post without image
+      const initialTweetMsg =
+        "📆 " +
+        this.date.format("D MMMM YYYY dddd H:mm ") +
+        "\n" +
+        this.phrases.firstTweet.mostSearched +
+        this.phrases.firstTweet.moreInfo;
+      return { text: initialTweetMsg };
     }
     console.log("Uploaded image, the id is: " + imageId);
 
@@ -107,8 +116,7 @@ class TrendTweeter {
       if (trend.relatedQueries.length > 0) {
         // Leave blank if no relatedQueries.
         let queriesStr;
-        if (trend.relatedQueries.length > 5)
-          queriesStr = trend.relatedQueries.slice(0, 5).join(", ");
+        if (trend.relatedQueries.length > 5) queriesStr = trend.relatedQueries.slice(0, 5).join(", ");
         else queriesStr = trend.relatedQueries.join(", ");
         tweetStr += this.phrases.relatedQueries + queriesStr + "\n";
       }
@@ -117,17 +125,12 @@ class TrendTweeter {
       // console.log('Tweet length: ' + tweetLength);
 
       tweetStr += this.phrases.detailedStats + trend.moreInfo + "\n"; // trend.moreInfo is a URL
-      tweetLength +=
-        this.phrases.detailedStats.length + this.tco_URL_length + 1; // dont add trend.moreInfo.length, use short URL length.
+      tweetLength += this.phrases.detailedStats.length + this.tco_URL_length + 1; // dont add trend.moreInfo.length, use short URL length.
       // console.log('Tweet: ' + tweetStr);
       // console.log('Tweet length: ' + tweetLength);
 
       // Add each ARTICLE_COUNNT articles as new line, in same tweet if possible. Else in the next tweet.
-      for (
-        let i = 0;
-        i < Math.min(this.articleCount, trend.articles.length);
-        i++
-      ) {
+      for (let i = 0; i < Math.min(this.articleCount, trend.articles.length); i++) {
         if (i === 0) {
           tweetStr += this.phrases.articles;
           tweetLength += this.phrases.articles.length;
@@ -136,14 +139,9 @@ class TrendTweeter {
         }
         let article = trend.articles[i];
         // Article line
-        let articleStr = `${article.source}: ${decodeHtmlCharCodes(
-          article.title
-        )}\n${article.url}\n`;
+        let articleStr = `${article.source}: ${decodeHtmlCharCodes(article.title)}\n${article.url}\n`;
         let articleStrLength =
-          article.source.length +
-          decodeHtmlCharCodes(article.title).length +
-          5 +
-          this.tco_URL_length;
+          article.source.length + decodeHtmlCharCodes(article.title).length + 5 + this.tco_URL_length;
         // console.log('Current tweet: ' + tweetStr);
         // console.log('New article line: ', articleStr);
 
@@ -183,18 +181,9 @@ class TrendTweeter {
    */
   trendsToImage = async (detailedTrends) => {
     console.log("Registering fonts");
-    // console.log('Registering Light font')
-    registerFont("assets/Roboto-Light.ttf", { family: "Roboto", weight: 300 });
-    // console.log('Registered Light font')
-    // console.log('Registering Regular font')
-    registerFont("assets/Roboto-Regular.ttf", {
-      family: "Roboto",
-      weight: 400,
-    });
-    // console.log('Registered regular font')
-    // console.log('Registering Bold font')
-    registerFont("assets/Roboto-Bold.ttf", { family: "Roboto", weight: 700 });
-    // console.log('Registered Bold font')
+    GlobalFonts.registerFromPath("assets/Roboto-Light.ttf", "Roboto-Light");
+    GlobalFonts.registerFromPath("assets/Roboto-Regular.ttf", "Roboto-Regular");
+    GlobalFonts.registerFromPath("assets/Roboto-Bold.ttf", "Roboto-Bold");
     console.log("Registered fonts");
     console.log("Creating Canvas");
     const canvas = createCanvas(this.width, this.height);
@@ -202,10 +191,7 @@ class TrendTweeter {
     const textMarginTop = 120;
     const textMarginX = 64;
     const context = canvas.getContext("2d");
-    const explaination =
-      this.date.format("D MMMM YYYY dddd H:mm ") +
-      " - " +
-      this.phrases.imageTitle;
+    const explaination = this.date.format("D MMMM YYYY dddd H:mm ") + " - " + this.phrases.imageTitle;
     context.fillStyle = "#fff";
     context.fillRect(0, 0, this.width, this.height);
 
@@ -220,58 +206,42 @@ class TrendTweeter {
     context.drawImage(image, textMarginX, 16, 128, 128);
     // console.log('Drawed image')
 
-    context.font = "bold 24pt Roboto";
+    context.font = "bold 24pt Roboto-Bold";
     context.fillText(this.accountName, 200, 80);
 
-    context.font = "12pt Roboto";
+    context.font = "12pt Roboto-Regular";
     context.fillText(explaination, 200, 110);
 
     console.log("Starting for loop");
     for (let i = 0; i < detailedTrends.length; i++) {
       // Split canvas into two columns with max 10 items
       let lineX = i > 9 ? textMarginX + this.width / 2 - 24 : textMarginX;
-      let lineY =
-        i > 9
-          ? textMarginTop + (i - 10 + 1) * 48
-          : textMarginTop + (i + 1) * 48;
+      let lineY = i > 9 ? textMarginTop + (i - 10 + 1) * 48 : textMarginTop + (i + 1) * 48;
 
       const trend = detailedTrends[i];
       const title = `${i + 1}. ${trend.title}`;
-      const count =
-        trend.count.slice(0, -2) + this.replaceCountLetter(trend.count) + "+";
-      const summary = `${trend.articles[0].source}: ${decodeHtmlCharCodes(
-        trend.articles[0].title
-      )}`;
+      const count = trend.count.slice(0, -2) + this.replaceCountLetter(trend.count) + "+";
+      const summary = `${trend.articles[0].source}: ${decodeHtmlCharCodes(trend.articles[0].title)}`;
 
       // console.log('Writing title ' + title)
       // Title
-      context.font = "bold 12pt Roboto";
+      context.font = "bold 12pt Roboto-Bold";
       context.fillText(title, lineX, lineY);
       let titleWidth = context.measureText(title).width;
-      // console.log('Wrote title')
 
-      // console.log('Writing count')
       // Search count
-      context.font = "300 11pt Roboto";
-      context.fillText(
-        " — " + count + " " + this.phrases.searches,
-        lineX + titleWidth,
-        lineY
-      );
-      // console.log('Wrote count')
+      context.font = "11pt Roboto-Light";
+      context.fillText(" — " + count + " " + this.phrases.searches, lineX + titleWidth, lineY);
 
-      // console.log('Writing summary')
       // Summary
-      context.font = "300 11pt Roboto";
+      context.font = "11pt Roboto-Light";
       context.fillText(truncate(summary, 74), lineX, lineY + 20);
       // console.log('Wrote summary')
     }
     console.log("End for loop");
     // const buffer = canvas.toBuffer('image/png')
     // fs.writeFileSync('./test.png', buffer)
-    const base64 = canvas
-      .toDataURL("image/jpg")
-      .replace(/^data:image\/\w+;base64,/, "");
+    const base64 = canvas.toDataURL("image/jpg").replace(/^data:image\/\w+;base64,/, "");
     const buff = Buffer.from(base64, "base64");
     return buff;
   };
@@ -300,9 +270,7 @@ class TrendTweeter {
 
     trends.forEach((trend, i) => {
       let newLine =
-        `${i + 1}. ${trend.title} - ${trend.count}`.slice(0, -2) +
-        this.replaceCountLetter(trend.count) +
-        "+\n";
+        `${i + 1}. ${trend.title} - ${trend.count}`.slice(0, -2) + this.replaceCountLetter(trend.count) + "+\n";
 
       let temp = str + newLine;
       // Push as new tweet if exceeds 280 chars.
@@ -339,10 +307,10 @@ function decodeHtmlCharCodes(str) {
     gt: ">",
   };
   return str
-    .replace(translate_re, function (match, entity) {
+    .replace(translate_re, function (_match, entity) {
       return translate[entity];
     })
-    .replace(/&#(\d+);/gi, function (match, numStr) {
+    .replace(/&#(\d+);/gi, function (_match, numStr) {
       var num = parseInt(numStr, 10);
       return String.fromCharCode(num);
     });
