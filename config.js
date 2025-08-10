@@ -8,7 +8,7 @@ module.exports = {
       accessToken: process.env.TR_ACCESS_TOKEN_KEY,
       accessSecret: process.env.TR_ACCESS_TOKEN_SECRET,
     },
-    lite: false,
+    fullNews: false,
     locale: "tr",
     timezone: "Europe/Istanbul",
     phrases: {
@@ -34,7 +34,7 @@ module.exports = {
       accessToken: process.env.USA_ACCESS_TOKEN_KEY,
       accessSecret: process.env.USA_ACCESS_TOKEN_SECRET,
     },
-    lite: false,
+    fullNews: false,
     locale: "en-us",
     timezone: "America/New_York",
     phrases: {
@@ -61,7 +61,7 @@ module.exports = {
   //   },
   //   locale: 'en-in',
   //   timezone: 'Asia/Kolkata',
-  //   lite: false,
+  //   fullNews: false,
   //   phrases: {
   //     firstTweet: {
   //       mostSearched: "🔍 Recent trending searches in India:\n",
@@ -86,7 +86,7 @@ module.exports = {
     },
     locale: "de",
     timezone: "Europe/Berlin",
-    lite: true,
+    fullNews: true,
     phrases: {
       firstTweet: {
         mostSearched: "🔍 Die neuesten Trendthemen in Deutschland:\n",
@@ -109,7 +109,7 @@ module.exports = {
   //     accessToken: process.env.GB_ACCESS_TOKEN_KEY,
   //     accessSecret: process.env.GB_ACCESS_TOKEN_SECRET
   //   },
-  //   lite: false,
+  //   fullNews: false,
   //   locale: 'en-gb',
   //   timezone: 'Europe/London',
   //   phrases: {
@@ -134,7 +134,7 @@ module.exports = {
   //     accessToken: process.env.IE_ACCESS_TOKEN_KEY,
   //     accessSecret: process.env.IE_ACCESS_TOKEN_SECRET
   //   },
-  //   lite: true,
+  //   fullNews: true,
   //   locale: 'en-ie',
   //   timezone: 'Europe/Dublin',
   //   phrases: {
@@ -159,7 +159,7 @@ module.exports = {
       accessToken: process.env.AU_ACCESS_TOKEN_KEY,
       accessSecret: process.env.AU_ACCESS_TOKEN_SECRET,
     },
-    lite: true,
+    fullNews: true,
     locale: "en-au",
     timezone: "Australia/Canberra",
     phrases: {
@@ -184,7 +184,7 @@ module.exports = {
   //     accessToken: process.env.NZ_ACCESS_TOKEN_KEY,
   //     accessSecret: process.env.NZ_ACCESS_TOKEN_SECRET,
   //   },
-  //   lite: true,
+  //   fullNews: true,
   //   locale: "en-nz",
   //   timezone: "Pacific/Auckland",
   //   phrases: {
@@ -209,7 +209,7 @@ module.exports = {
   //     accessToken: process.env.CA_ACCESS_TOKEN_KEY,
   //     accessSecret: process.env.CA_ACCESS_TOKEN_SECRET,
   //   },
-  //   lite: true,
+  //   fullNews: true,
   //   locale: "en-ca",
   //   timezone: "Canada/Eastern",
   //   phrases: {
@@ -234,7 +234,7 @@ module.exports = {
   //     accessToken: process.env.PK_ACCESS_TOKEN_KEY,
   //     accessSecret: process.env.PK_ACCESS_TOKEN_SECRET
   //   },
-  //   lite: true,
+  //   fullNews: true,
   //   locale: 'en-in',
   //   timezone: 'Asia/Karachi',
   //   phrases: {
@@ -259,7 +259,7 @@ module.exports = {
       accessToken: process.env.AT_ACCESS_TOKEN_KEY,
       accessSecret: process.env.AT_ACCESS_TOKEN_SECRET,
     },
-    lite: true,
+    fullNews: true,
     locale: "de-at",
     timezone: "Europe/Vienna",
     phrases: {
@@ -286,7 +286,7 @@ module.exports = {
   //   },
   //   locale: "de",
   //   timezone: "Europe/Zurich",
-  //   lite: true,
+  //   fullNews: true,
   //   phrases: {
   //     firstTweet: {
   //       mostSearched: "🔍 Die neuesten Trendthemen in der Schweiz:\n",
@@ -311,7 +311,7 @@ module.exports = {
   //   },
   //   locale: "it",
   //   timezone: "Europe/Rome",
-  //   lite: true,
+  //   fullNews: true,
   //   phrases: {
   //     firstTweet: {
   //       mostSearched: "🔍 Le più recenti ricerche in Italia:\n",
@@ -336,7 +336,7 @@ module.exports = {
   //   },
   //   locale: 'es',
   //   timezone: 'Europe/Madrid',
-  //   lite: true,
+  //   fullNews: true,
   //   phrases: {
   //     firstTweet: {
   //       mostSearched: "🔍 Últimas búsquedas en tendencia en España:\n",
@@ -361,7 +361,7 @@ module.exports = {
   //   },
   //   locale: "es-mx",
   //   timezone: "America/Mexico_City",
-  //   lite: true,
+  //   fullNews: true,
   //   phrases: {
   //     firstTweet: {
   //       mostSearched: "🔍 Últimas búsquedas en tendencia en México:\n",
@@ -386,7 +386,7 @@ module.exports = {
   //   },
   //   locale: "es-mx",
   //   timezone: "America/Bogota",
-  //   lite: true,
+  //   fullNews: true,
   //   phrases: {
   //     firstTweet: {
   //       mostSearched: "🔍 Últimas búsquedas en tendencia en Colombia:\n",
@@ -411,7 +411,7 @@ module.exports = {
   //   },
   //   locale: "es-mx",
   //   timezone: "America/Argentina/Buenos_Aires",
-  //   lite: true,
+  //   fullNews: true,
   //   phrases: {
   //     firstTweet: {
   //       mostSearched: "🔍 Últimas búsquedas en tendencia en Argentina:\n",

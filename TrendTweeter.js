@@ -18,7 +18,7 @@ class TrendTweeter {
     this.phrases = config[country].phrases;
     this.accountName = config[country].accountName;
     this.timezone = config[country].timezone;
-    this.lite = config[country].lite;
+    this.fullNews = config[country].fullNews;
     this.width = 1200; // Summary image canvas width
     this.height = 675;
   }
@@ -33,33 +33,27 @@ class TrendTweeter {
    * @returns {Promise}
    */
   tweetTrends = async () => {
-    // Limit number of trends to avoid overwhelming the API
-    const maxTrends = this.lite ? 5 : 10;
-    const limitedTrends = { 
-      ...this.trends, 
-      trendingSearches: this.trends.trendingSearches.slice(0, maxTrends) 
-    };
-    
     // Extract title and count for summary
-    let summaryTrends = limitedTrends.trendingSearches.map((trendObj) => {
+    let summaryTrends = this.trends.trendingSearches.map((trendObj) => {
       let summaryTrendObj = {
         title: trendObj.title.query,
         count: trendObj.formattedTraffic,
       };
       return summaryTrendObj;
     });
+
     // Extract details: title, related searches and articles
-    let detailedTrends = formatDetailedTrendsObjects(limitedTrends);
+    let detailedTrends = formatDetailedTrendsObjects(this.trends);
 
     // Generate first tweet with summary image
     const firstTweet = await this.generateFirstTweetWithSummaryImage(detailedTrends);
     let tweetsArray = [firstTweet];
 
-    // Next, push the simple list of trends.
+    // Next, push the simple list of trends.t
     tweetsArray = tweetsArray.concat(this.summaryTrendsToTweets(summaryTrends));
 
-    // Concat detailed news if not lite
-    if (!this.lite) {
+    // Concat detailed news if not fullNews
+    if (this.fullNews) {
       tweetsArray = tweetsArray.concat(this.splitDetailedTrendsInto280(detailedTrends));
     }
     // Post tweets with delays to avoid rate limiting
@@ -229,7 +223,10 @@ class TrendTweeter {
       const trend = detailedTrends[i];
       const title = `${i + 1}. ${trend.title}`;
       const count = trend.count.slice(0, -2) + this.replaceCountLetter(trend.count) + "+";
-      const summary = `${trend.articles[0].source}: ${decodeHtmlCharCodes(trend.articles[0].title)}`;
+      let summary = "";
+      if (trend.articles && trend.articles.length > 0) {
+        summary = `${trend.articles[0].source}: ${decodeHtmlCharCodes(trend.articles[0].title)}`;
+      }
 
       // console.log('Writing title ' + title)
       // Title
@@ -301,36 +298,35 @@ class TrendTweeter {
   postTweetsWithDelay = async (tweetsArray) => {
     const results = [];
     let previousTweetId = null;
-    
+
     for (let i = 0; i < tweetsArray.length; i++) {
       const tweet = tweetsArray[i];
-      
+
       // Add reply_to for threading if not the first tweet
       if (previousTweetId && i > 0) {
         tweet.reply = { in_reply_to_tweet_id: previousTweetId };
       }
-      
+
       try {
         console.log(`Posting tweet ${i + 1}/${tweetsArray.length}`);
         const result = await this.TwitterClient.v2.tweet(tweet);
         results.push(result);
         previousTweetId = result.data.id;
-        
+
         // Add delay between tweets (except after the last one)
         if (i < tweetsArray.length - 1) {
           const delay = this.calculateDelay(i, tweetsArray.length);
-          console.log(`Waiting ${delay/1000}s before next tweet...`);
+          console.log(`Waiting ${delay / 1000}s before next tweet...`);
           await this.sleep(delay);
         }
-        
       } catch (error) {
         console.error(`Failed to post tweet ${i + 1}:`, error);
-        
+
         // If we get rate limited, wait longer and retry once
         if (error.code === 429 || error.data?.errors?.[0]?.code === 88) {
-          console.log('Rate limited - waiting 60 seconds before retry...');
+          console.log("Rate limited - waiting 60 seconds before retry...");
           await this.sleep(60000);
-          
+
           try {
             const result = await this.TwitterClient.v2.tweet(tweet);
             results.push(result);
@@ -344,7 +340,7 @@ class TrendTweeter {
         }
       }
     }
-    
+
     return results;
   };
 
@@ -359,7 +355,7 @@ class TrendTweeter {
     const baseDelay = 10000;
     const incrementalDelay = index * 5000; // Add 5s for each subsequent tweet
     const maxDelay = 30000; // Maximum 30 seconds
-    
+
     return Math.min(baseDelay + incrementalDelay, maxDelay);
   };
 
@@ -369,7 +365,7 @@ class TrendTweeter {
    * @returns {Promise} - Promise that resolves after delay
    */
   sleep = (ms) => {
-    return new Promise(resolve => setTimeout(resolve, ms));
+    return new Promise((resolve) => setTimeout(resolve, ms));
   };
 
   replaceCountLetter = (trendCountStr) => {
