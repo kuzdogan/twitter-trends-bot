@@ -241,7 +241,7 @@ class TrendTweeter {
     console.log("End for loop");
     // const buffer = canvas.toBuffer('image/png')
     // fs.writeFileSync('./test.png', buffer)
-    const base64 = canvas.toDataURL("image/jpg").replace(/^data:image\/\w+;base64,/, "");
+    const base64 = canvas.toDataURL("image/png").replace(/^data:image\/\w+;base64,/, "");
     const buff = Buffer.from(base64, "base64");
     return buff;
   };
