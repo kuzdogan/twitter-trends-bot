@@ -3,8 +3,8 @@
 module.exports = {
   TR: {
     twitterConfig: {
-      appKey: process.env.CONSUMER_KEY,
-      appSecret: process.env.CONSUMER_SECRET,
+      appKey: process.env.TR_CONSUMER_KEY,
+      appSecret: process.env.TR_CONSUMER_SECRET,
       accessToken: process.env.TR_ACCESS_TOKEN_KEY,
       accessSecret: process.env.TR_ACCESS_TOKEN_SECRET,
     },
@@ -29,8 +29,8 @@ module.exports = {
   US: {
     // Use here US only instead of USA. Google trends API library asks US not USA.
     twitterConfig: {
-      appKey: process.env.CONSUMER_KEY,
-      appSecret: process.env.CONSUMER_SECRET,
+      appKey: process.env.USA_CONSUMER_KEY,
+      appSecret: process.env.USA_CONSUMER_SECRET,
       accessToken: process.env.USA_ACCESS_TOKEN_KEY,
       accessSecret: process.env.USA_ACCESS_TOKEN_SECRET,
     },
@@ -50,7 +50,7 @@ module.exports = {
       searches: "searches",
       imageTitle: "Recent trending searches in the United States:",
     },
-    accountName: "@24Trends_USA",
+    accountName: "@24TrendsUSA",
   },
   // IN: {
   //   twitterConfig: {
@@ -77,31 +77,31 @@ module.exports = {
   //   },
   //   accountName: '@24TrendsIndia'
   // },
-  DE: {
-    twitterConfig: {
-      appKey: process.env.CONSUMER_KEY,
-      appSecret: process.env.CONSUMER_SECRET,
-      accessToken: process.env.DE_ACCESS_TOKEN_KEY,
-      accessSecret: process.env.DE_ACCESS_TOKEN_SECRET,
-    },
-    locale: "de",
-    timezone: "Europe/Berlin",
-    fullNews: true,
-    phrases: {
-      firstTweet: {
-        mostSearched: "🔍 Die neuesten Trendthemen in Deutschland:\n",
-        moreInfo: "Schlagzeilen und Details sind unten aufgelistet \n\n",
-      },
-      relatedQueries: "🔍 Zusammenhängende Suchen: ",
-      detailedStats: "📊 Detaillierte Statistiken: ",
-      articles: "📰 Betreffende Nachrichte:\n",
-      thousand: "K",
-      million: "M",
-      searches: "Suchen",
-      imageTitle: "Die neuesten Trendthemen in Deutschland:",
-    },
-    accountName: "@24trendsDE",
-  },
+  // DE: {
+  //   twitterConfig: {
+  //     appKey: process.env.CONSUMER_KEY,
+  //     appSecret: process.env.CONSUMER_SECRET,
+  //     accessToken: process.env.DE_ACCESS_TOKEN_KEY,
+  //     accessSecret: process.env.DE_ACCESS_TOKEN_SECRET,
+  //   },
+  //   locale: "de",
+  //   timezone: "Europe/Berlin",
+  //   fullNews: true,
+  //   phrases: {
+  //     firstTweet: {
+  //       mostSearched: "🔍 Die neuesten Trendthemen in Deutschland:\n",
+  //       moreInfo: "Schlagzeilen und Details sind unten aufgelistet \n\n",
+  //     },
+  //     relatedQueries: "🔍 Zusammenhängende Suchen: ",
+  //     detailedStats: "📊 Detaillierte Statistiken: ",
+  //     articles: "📰 Betreffende Nachrichte:\n",
+  //     thousand: "K",
+  //     million: "M",
+  //     searches: "Suchen",
+  //     imageTitle: "Die neuesten Trendthemen in Deutschland:",
+  //   },
+  //   accountName: "@24trendsDE",
+  // },
   // GB: {
   //   twitterConfig: {
   //     appKey: process.env.CONSUMER_KEY,
@@ -152,31 +152,31 @@ module.exports = {
   //   },
   //   accountName: '@UKGoogleTrends1',
   // },
-  AU: {
-    twitterConfig: {
-      appKey: process.env.CONSUMER_KEY,
-      appSecret: process.env.CONSUMER_SECRET,
-      accessToken: process.env.AU_ACCESS_TOKEN_KEY,
-      accessSecret: process.env.AU_ACCESS_TOKEN_SECRET,
-    },
-    fullNews: true,
-    locale: "en-au",
-    timezone: "Australia/Canberra",
-    phrases: {
-      firstTweet: {
-        mostSearched: "🔍 Recent trending searches in Australia:\n",
-        moreInfo: "News and details below \n\n",
-      },
-      relatedQueries: "🔍 Related Searches: ",
-      detailedStats: "📊 Detailed Stats: ",
-      articles: "📰 News Related:\n",
-      thousand: "K",
-      million: "M",
-      searches: "searches",
-      imageTitle: "Recent trending searches in Australia:",
-    },
-    accountName: "@24trendsAU",
-  },
+  // AU: {
+  //   twitterConfig: {
+  //     appKey: process.env.CONSUMER_KEY,
+  //     appSecret: process.env.CONSUMER_SECRET,
+  //     accessToken: process.env.AU_ACCESS_TOKEN_KEY,
+  //     accessSecret: process.env.AU_ACCESS_TOKEN_SECRET,
+  //   },
+  //   fullNews: true,
+  //   locale: "en-au",
+  //   timezone: "Australia/Canberra",
+  //   phrases: {
+  //     firstTweet: {
+  //       mostSearched: "🔍 Recent trending searches in Australia:\n",
+  //       moreInfo: "News and details below \n\n",
+  //     },
+  //     relatedQueries: "🔍 Related Searches: ",
+  //     detailedStats: "📊 Detailed Stats: ",
+  //     articles: "📰 News Related:\n",
+  //     thousand: "K",
+  //     million: "M",
+  //     searches: "searches",
+  //     imageTitle: "Recent trending searches in Australia:",
+  //   },
+  //   accountName: "@24trendsAU",
+  // },
   // NZ: {
   //   twitterConfig: {
   //     appKey: process.env.CONSUMER_KEY,
@@ -252,31 +252,31 @@ module.exports = {
   //   },
   //   accountName: '@GooglePakistan',
   // },
-  AT: {
-    twitterConfig: {
-      appKey: process.env.CONSUMER_KEY,
-      appSecret: process.env.CONSUMER_SECRET,
-      accessToken: process.env.AT_ACCESS_TOKEN_KEY,
-      accessSecret: process.env.AT_ACCESS_TOKEN_SECRET,
-    },
-    fullNews: true,
-    locale: "de-at",
-    timezone: "Europe/Vienna",
-    phrases: {
-      firstTweet: {
-        mostSearched: "🔍 Die neuesten Trendthemen in in Österreich:\n",
-        moreInfo: "Schlagzeilen und Details sind unten aufgelistet \n\n",
-      },
-      relatedQueries: "🔍 Zusammenhängende Suchen: ",
-      detailedStats: "📊 Detaillierte Statistiken: ",
-      articles: "📰 Betreffende Nachrichte:\n",
-      thousand: "K",
-      million: "M",
-      searches: "Suchen",
-      imageTitle: "Die neuesten Trendthemen in Österreich:",
-    },
-    accountName: "@24Trends_AT",
-  },
+  // AT: {
+  //   twitterConfig: {
+  //     appKey: process.env.CONSUMER_KEY,
+  //     appSecret: process.env.CONSUMER_SECRET,
+  //     accessToken: process.env.AT_ACCESS_TOKEN_KEY,
+  //     accessSecret: process.env.AT_ACCESS_TOKEN_SECRET,
+  //   },
+  //   fullNews: true,
+  //   locale: "de-at",
+  //   timezone: "Europe/Vienna",
+  //   phrases: {
+  //     firstTweet: {
+  //       mostSearched: "🔍 Die neuesten Trendthemen in in Österreich:\n",
+  //       moreInfo: "Schlagzeilen und Details sind unten aufgelistet \n\n",
+  //     },
+  //     relatedQueries: "🔍 Zusammenhängende Suchen: ",
+  //     detailedStats: "📊 Detaillierte Statistiken: ",
+  //     articles: "📰 Betreffende Nachrichte:\n",
+  //     thousand: "K",
+  //     million: "M",
+  //     searches: "Suchen",
+  //     imageTitle: "Die neuesten Trendthemen in Österreich:",
+  //   },
+  //   accountName: "@24Trends_AT",
+  // },
   // CH: {
   //   twitterConfig: {
   //     appKey: process.env.CONSUMER_KEY,

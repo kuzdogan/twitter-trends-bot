@@ -3,11 +3,8 @@ const TrendTweeter = require("./TrendTweeter");
 const config = require("./config.js");
 const moment = require("moment-timezone");
 
-// Updated for Google Cloud Functions v2
-const { CloudEvent } = require("@google-cloud/functions-framework");
-
-function tweetDailyTrend(cloudEvent) {
-  // cloudEvent for Google Cloud Functions v2 Pub/Sub
+function tweetDailyTrend(message, context) {
+  // message and context for Google Cloud Pub/Sub (v2 compatible)
   for (const country in config) {
     // Get the time for this country.
     let date = moment().tz(config[country].timezone).locale(config[country].locale);
@@ -112,8 +109,4 @@ async function getDailyTrends(geo, date = new Date()) {
 }
 
 // Export for Google Cloud Functions v2
-module.exports = { tweetDailyTrend };
-
-// For Google Cloud Functions v2, we need to register the function
-const functions = require("@google-cloud/functions-framework");
-functions.cloudEvent("tweetDailyTrend", tweetDailyTrend);
+exports.tweetDailyTrend = tweetDailyTrend;
